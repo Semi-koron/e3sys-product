@@ -1,16 +1,27 @@
-type MenuButtonProps = {
-    onClick: () => void;
-};
+'use client'
 
-const MenuButton: React.FC<MenuButtonProps> = ({ onClick }) => {
+import { useState } from "react";
+import Sidebar from "./Sidebar";
+
+const MenuButton = () => {
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    const toggleSidebar = () => {
+        setIsSidebarOpen(!isSidebarOpen);
+    };
+
     return (
-        <button
-            className="bg-none border-none text-2xl text-black cursor-pointer absolute left-0"
-            onClick={onClick}
-        >
-            ☰
-        </button>
+        <>
+            <button
+                className="border-none text-4xl text-black cursor-pointer"
+                onClick={toggleSidebar}
+            >
+                ☰
+            </button>
+            <Sidebar isOpen={isSidebarOpen} onClose={toggleSidebar} />
+        </>
     );
 };
 
 export default MenuButton;
+
