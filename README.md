@@ -16,7 +16,15 @@
 3. docker desktop を起動してください。
 4. ディレクトリの一番上で以下のコマンドを実行してください。
    `docker compose up --build`
-5. 以下のポート番号を参考にしてそれぞれ開発に励んでください。
+5. バックエンドが動いている docker のコンテナに接続するコマンドを実行します。
+   `docker exec -it e3sys-product-backend-1 bash`
+6. composer で依存パッケージをインストールします。
+   `composer install`
+7. storage に対するアクセス権限を与えます
+   `chmod -R 777 storage`
+8. コンテナから離れます
+   `exit`
+9. 以下のポート番号を参考にしてそれぞれ開発に励んでください。
    `localhost:{ポート番号}`にアクセスすることでそれぞれのページに飛ぶことができます。
 
 ### フロントエンド関連のポート

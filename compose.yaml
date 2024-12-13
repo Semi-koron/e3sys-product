@@ -1,15 +1,16 @@
 services:
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend:/app
-    working_dir: /app
-    tty: true
-    stdin_open: true
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3000:3000"
+  #   # volumes:
+  #   #   - ./frontend:/app
+  #   working_dir: /app
+  #   tty: true
+  #   stdin_open: true
+  #   user: nextjs
 
   backend:
     build:
