@@ -13,7 +13,7 @@ export default function Home() {
           <Header />
         </div>
       </div>
-      <main className="grid grid-rows-[1fr_1fr_3fr] gap-4 mb-6">
+      <main className="flex flex-col gap-4 mb-6">
         <Profile />
         <Survey />
         <Graph />
