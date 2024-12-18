@@ -7,6 +7,7 @@ import {
   useNodesState,
   useEdgesState,
   addEdge,
+  Connection,
 } from "@xyflow/react";
 import type { TechData } from "@/app/types/Tech";
 import dagre from "dagre";
