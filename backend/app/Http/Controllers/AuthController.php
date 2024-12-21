@@ -1,5 +1,7 @@
+<?php
 namespace App\Http\Controllers;
 
+use Kreait\Firebase\Factory;
 use Kreait\Firebase\Auth as FirebaseAuth;
 use Kreait\Firebase\Exception\Auth\TokenExpired;
 use Illuminate\Http\Request;
@@ -9,31 +11,42 @@ class AuthController extends Controller
 {
     protected $auth;
 
-    public function __construct(FirebaseAuth $auth)
+    public function __construct(FirebaseAuth $auth = null)
     {
-        $this->auth = $auth;
+        if ($auth) {
+            $this->auth = $auth;
+        } else {
+            // Firebase Factoryから認証インスタンスを作成
+            $factory = (new Factory())->withServiceAccount('firebase-admin-key.json');
+            $this->auth = $factory->createAuth();
+        }
     }
 
     public function verifyToken(Request $request)
     {
         try {
-            // Firebaseトークンを検証
-            $idToken = $request->input('token');
-            $verifiedIdToken = $this->auth->verifyIdToken($idToken);
+            // Authorizationヘッダーからトークンを取得
+            $idToken = $request->bearerToken();
 
-            // トークンが有効なら、ユーザー情報を取得
-            $uid = $verifiedIdToken->getClaim('sub');
-            $user = User::where('firebase_uid', $uid)->first();
-
-            if (!$user) {
-                return response()->json(['error' => 'User not found'], 404);
+            if (!$idToken) {
+                return response()->json(['error' => 'Authorization token not found'], 400);
             }
 
-            return response()->json($user);
+            // トークンを検証
+            $verifiedIdToken = $this->auth->verifyIdToken($idToken);
 
+            // トークンからUIDを取得
+            $uid = $verifiedIdToken->claims()->get('sub');
+
+            return response()->json(['uid' => $uid], 200);
         } catch (TokenExpired $e) {
+            // トークンが期限切れの場合
             return response()->json(['error' => 'Token has expired'], 401);
+        } catch (\InvalidArgumentException $e) {
+            // トークンが無効または破損している場合
+            return response()->json(['error' => 'Invalid token format'], 401);
         } catch (\Exception $e) {
+            // その他のエラー
             return response()->json(['error' => 'Invalid token'], 401);
         }
     }
