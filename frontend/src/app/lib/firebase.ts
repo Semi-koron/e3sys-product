@@ -1,7 +1,6 @@
 // Firebase SDKの必要な関数をインポート
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth"; // 認証機能（必要に応じて追加）
-import { getFirestore } from "firebase/firestore"; // Firestoreデータベース（必要に応じて追加）
 
 // Firebaseの設定情報
 const firebaseConfig = {
