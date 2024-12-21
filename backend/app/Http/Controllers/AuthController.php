@@ -1,3 +1,4 @@
+<?php
 namespace App\Http\Controllers;
 
 use Kreait\Firebase\Auth as FirebaseAuth;
@@ -17,8 +18,8 @@ class AuthController extends Controller
     public function verifyToken(Request $request)
     {
         try {
-            // Firebaseトークンを検証
-            $idToken = $request->input('token');
+            // Firebase reuest headerからトークンを取得
+            $idToken = $request->bearerToken();
             $verifiedIdToken = $this->auth->verifyIdToken($idToken);
 
             // トークンが有効なら、ユーザー情報を取得
