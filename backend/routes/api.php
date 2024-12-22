@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Middleware\FirebaseTokenAuth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,9 +14,16 @@ Route::get('/test', function () {
     return response()->json([
         'message' => 'Hello, World!'
     ]);
-});
+})->middleware(FirebaseTokenAuth::class);
 
 Route::post('/echo', function (Request $request) {
+    return response()->json([
+        'question' => $request->input('question')
+    ]);
+})->middleware(FirebaseTokenAuth::class);
+
+//middlewareを使わない
+Route::post('/echo2', function (Request $request) {
     return response()->json([
         'question' => $request->input('question')
     ]);
