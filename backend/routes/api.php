@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,3 +20,5 @@ Route::post('/echo', function (Request $request) {
         'question' => $request->input('question')
     ]);
 });
+
+Route::get('/verify-token', [AuthController::class, 'verifyToken']);
