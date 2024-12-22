@@ -1,28 +1,36 @@
 <?php
-namespace App\Http\Controllers;
 
+namespace App\Http\Middleware;
+
+use Closure;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Auth as FirebaseAuth;
 use Kreait\Firebase\Exception\Auth\TokenExpired;
 use Illuminate\Http\Request;
-use App\Models\User;
+use Symfony\Component\HttpFoundation\Response;
 
-class AuthController extends Controller
+class FirebaseTokenAuth
 {
-    protected $auth;
-    
-    public function __construct(FirebaseAuth $auth = null)
-    {
-        if ($auth) {
-            $this->auth = $auth;
-        } else {
-            // Firebase Factoryから認証インスタンスを作成
-            $factory = (new Factory())->withServiceAccount('firebase-admin-key.json');
-            $this->auth = $factory->createAuth();
-        }
-    }
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     */
 
-    public function verifyToken(Request $request)
+     protected $auth;
+
+     public function __construct(FirebaseAuth $auth = null)
+     {
+         if ($auth) {
+             $this->auth = $auth;
+         } else {
+             // Firebase Factoryから認証インスタンスを作成
+             $factory = (new Factory())->withServiceAccount('firebase-admin-key.json');
+             $this->auth = $factory->createAuth();
+         }
+     }
+
+    public function handle(Request $request, Closure $next): Response
     {
         try {
             // Authorizationヘッダーからトークンを取得
@@ -37,8 +45,8 @@ class AuthController extends Controller
 
             // トークンからUIDを取得
             $uid = $verifiedIdToken->claims()->get('sub');
-
-            return response()->json(['uid' => $uid], 200);
+            
+            return $next($request);
         } catch (TokenExpired $e) {
             // トークンが期限切れの場合
             return response()->json(['error' => 'Token has expired'], 401);
