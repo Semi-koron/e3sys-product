@@ -1,8 +1,8 @@
-import MenuButton from "./components/Button";
-import Header from "./components/Header";
-import Profile from "./components/Profile";
-import Survey from "./components/Survey";
-import Graph from "./components/Graph";
+import MenuButton from "@/components/Button";
+import Header from "@/components/Header";
+import Profile from "@/components/Profile";
+import Survey from "@/components/Survey";
+import Graph from "@/components/Graph";
 
 export default function Home() {
   return (
