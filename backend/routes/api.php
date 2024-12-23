@@ -14,12 +14,13 @@ Route::get('/test', function () {
     return response()->json([
         'message' => 'Hello, World!'
     ]);
+
 });
 
 Route::post('/echo', function (Request $request) {
     return response()->json([
         'message' => $request->input('question')
-    ]);
+ ]);
 })->middleware(FirebaseTokenAuth::class);
 
 //middlewareを使わない
