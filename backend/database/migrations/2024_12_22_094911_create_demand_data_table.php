@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('demand_data', function (Blueprint $table) {
             $table->id();
-            $table->json('wantTech'); // number[]
+            $table->string('demandName');
             $table->string('startTime');
             $table->string('endTime');
+            $table->foreignId('wantTech')->nullable()->constrained('tech_data');
+            $table->foreignId('joinUser')->nullable()->constrained('user_data')->cascadeOnDelete();
             $table->timestamps();
         });
     }
