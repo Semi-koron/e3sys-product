@@ -21,3 +21,6 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+firebase-admin-key.json
+./public/firebase-admin-key.json

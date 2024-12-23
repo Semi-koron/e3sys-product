@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GeminiController;
+use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -12,3 +14,6 @@ Route::get('/test', function () {
         'message' => 'Hello, World!'
     ]);
 });
+
+Route::get('/', [GeminiController::class, 'index']);
+Route::post('/gemini/post', [GeminiController::class, 'post']);

@@ -3,7 +3,6 @@ import { useCallback } from "react";
 import {
   ReactFlow,
   MiniMap,
-  Controls,
   Background,
   useNodesState,
   useEdgesState,
@@ -14,6 +13,9 @@ import type { TechData } from "@/app/types/Tech";
 import dagre from "dagre";
 
 import "@xyflow/react/dist/style.css";
+
+const masteredTech: number[] = [1, 3, 5, 9]; // 習得済みの技術ID
+const masteringTech: number[] = [6, 15]; // 習得中の技術ID
 
 const techData = [
   // フロントエンド技術
@@ -157,12 +159,54 @@ const Graph = () => {
     [setEdges]
   );
 
+  // ノードとエッジのスタイルを更新
+  const getNodeStyle = (node: any) => {
+    if (masteredTech.includes(Number(node.id))) {
+      return {
+        background: "rgba(34,197,94,0.8)", // 緑色
+        color: "white",
+        border: "2px solid rgba(34,197,94,1)",
+      };
+    } else if (masteringTech.includes(Number(node.id))) {
+      return {
+        background: "rgba(59,130,246,0.8)", // 青色
+        color: "white",
+        border: "2px solid rgba(59,130,246,1)",
+      };
+    }
+    return {
+      background: "white",
+      color: "black",
+      border: "1px solid gray",
+    };
+  };
+
+  const getEdgeStyle = (edge: any) => {
+    const sourceMastered = masteredTech.includes(Number(edge.source));
+    const targetMastered = masteredTech.includes(Number(edge.target));
+    const sourceMastering = masteringTech.includes(Number(edge.source));
+    const targetMastering = masteringTech.includes(Number(edge.target));
+
+    if (sourceMastered && targetMastered) {
+      return { stroke: "rgba(34,197,94,1)", strokeWidth: 2 }; // 緑色
+    } else if (sourceMastering && targetMastering) {
+      return { stroke: "rgba(59,130,246,1)", strokeWidth: 2 }; // 青色
+    }
+    return { stroke: "gray", strokeWidth: 1 }; // デフォルト色
+  };
+
   return (
     <section className="bg-white p-4 rounded-lg shadow-md">
       <h2 className="text-lg text-black">グラフ</h2>
       <ReactFlow
-        nodes={nodes}
-        edges={edges}
+        nodes={nodes.map((node) => ({
+          ...node,
+          style: getNodeStyle(node),
+        }))}
+        edges={edges.map((edge) => ({
+          ...edge,
+          style: getEdgeStyle(edge),
+        }))}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
