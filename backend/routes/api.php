@@ -14,11 +14,11 @@ Route::get('/test', function () {
     return response()->json([
         'message' => 'Hello, World!'
     ]);
-})->middleware(FirebaseTokenAuth::class);
+});
 
 Route::post('/echo', function (Request $request) {
     return response()->json([
-        'question' => $request->input('question')
+        'message' => $request->input('question')
     ]);
 })->middleware(FirebaseTokenAuth::class);
 

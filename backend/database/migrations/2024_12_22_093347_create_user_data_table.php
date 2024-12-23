@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('user_data', function (Blueprint $table) {
             $table->id();
             $table->string('userName');
-            $table->json('masteredTech'); // number[]
-            $table->json('masteringTech'); // number[]
+            $table->string('uuid');
+            $table->foreignId('masteredTech')->nullable()->constrained('tech_data');
+            $table->foreignId('masteringTech')->nullable()->constrained('tech_data');
+            $table->foreignId('joinDemand')->nullable()->constrained('user_data')->cascadeOnDelete();
             $table->timestamps();
         });
     }

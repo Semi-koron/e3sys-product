@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('tech_data', function (Blueprint $table) {
             $table->id();
-            $table->string('techName');
-            $table->json('needTech'); // number[]
-            $table->json('neededTech'); // number[]
+            $table->string('name');
+            $table->foreignId('needTech')->nullable()->constrained('tech_data');
+            $table->foreignId('neededTech')->nullable()->constrained('tech_data');
             $table->timestamps();
         });
     }
