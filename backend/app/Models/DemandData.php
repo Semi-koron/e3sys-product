@@ -20,7 +20,7 @@ class DemandData extends Model
      */
     public function joined(): BelongsToMany
     {
-        return $this->belongsToMany(UserData::class);
+         return $this->belongsToMany(UserData::class, 'user_demand', 'demand_data_id', 'user_data_id');
     }
 
     /**
@@ -30,7 +30,7 @@ class DemandData extends Model
      */
     public function want(): BelongsToMany
     {
-        return $this->belongsToMany(TechData::class);
+         return $this->belongsToMany(DemandData::class, 'user_demand', 'user_data_id', 'demand_data_id');
     }
 
 
