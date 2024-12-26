@@ -46,4 +46,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+   public function joins()
+    {
+        return $this->belongsToMany(DemandData::class, 'demand_user', 'user_id', 'demand_id');
+    }
+    public function wants()
+    {
+        return $this->belongsToMany(DemandData::class, 'user_demand', 'user_id', 'demand_id');
+    }
+
+    public function technologies()
+    {
+        return $this->belongsToMany(TechData::class, 'user_tech', 'user_id', 'tech_id');
+    }
+
 }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tech_data', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('needTech')->nullable()->constrained('tech_data');
+            $table->foreignId('needTech')->nullable()->constrained('tech_data')->onDelete('cascade');
             $table->foreignId('neededTech')->nullable()->constrained('tech_data');
             $table->timestamps();
         });
