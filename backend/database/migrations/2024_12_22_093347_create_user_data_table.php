@@ -15,11 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('userName');
             $table->string('uuid');
-            $table->foreignId('masteredTech')->nullable()->constrained('tech_data');
-            $table->foreignId('masteringTech')->nullable()->constrained('tech_data');
-            $table->foreignId('joinDemand')->nullable()->constrained('user_data')->cascadeOnDelete();
+            $table->foreignId('masteredTech')->nullable()->constrained('tech_data')->nullOnDelete();
+            $table->foreignId('joinDemand')->nullable()->constrained('demand_data')->nullOnDelete();
             $table->timestamps();
-        });
+         });
     }
 
     /**

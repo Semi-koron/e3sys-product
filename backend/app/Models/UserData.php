@@ -7,36 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserData extends Model
 {
-    /** @use HasFactory<\Database\Factories\UserDataFactory> */
     use HasFactory;
 
-    /**
-     * The join that belong to the UserData
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function join(): BelongsToMany
+    protected $table = 'user_data';
+    protected $fillable = ['userName', 'uuid', 'masteredTech', 'joinDemand'];
+
+    public function joinedDemands()
     {
-        return $this->belongsToMany(DemandData::class);
+        return $this->belongsToMany(DemandData::class, 'user_demand', 'user_id', 'demand_id');
     }
 
-    /**
-     * The master that belong to the UserData
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function master(): BelongsToMany
+    public function masteredTechnologies()
     {
-        return $this->belongsToMany(TechData::class);
-    }
-
-    /**
-     * The mastering that belong to the UserData
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function mastering(): BelongsToMany
-    {
-        return $this->belongsToMany(TechData::class);
+        return $this->belongsToMany(TechData::class, 'user_tech', 'user_id', 'tech_id');
     }
 }

@@ -6,57 +6,28 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class TechData extends Model
-{
-    /** @use HasFactory<\Database\Factories\TechDataFactory> */
-    use HasFactory;
-    
-    /**
-     * The needed that belong to the TechData
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function needed(): BelongsToMany
+{   use HasFactory;
+
+    protected $table = 'tech_data'; 
+    protected $fillable = ['name', 'needTech', 'neededTech'];
+
+    public function masteredBy()
     {
-        return $this->belongsToMany(TechData::class, 'tech_data', 'neededTech', 'needTech');
+        return $this->belongsToMany(UserData::class, 'user_tech', 'tech_id', 'user_id');
     }
 
-    /**
-     * The need that belong to the TechData
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function need(): BelongsToMany
+    public function demandedBy()
     {
-        return $this->belongsToMany(TechData::class, 'tech_data', 'needTech', 'neededTech');
+        return $this->hasMany(DemandData::class, 'wantTech');
     }
 
-    /**
-     * The wanted that belong to the TechData
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function wanted(): BelongsToMany
+    public function needs()
     {
-        return $this->belongsToMany(DemandData::class);
+        return $this->belongsTo(TechData::class, 'needTech');
     }
 
-    /**
-     * The learner that belong to the TechData
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function learner(): BelongsToMany
+    public function neededBy()
     {
-        return $this->belongsToMany(UserData::class);
-    }
-
-    /**
-     * The master that belong to the TechData
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function master(): BelongsToMany
-    {
-        return $this->belongsToMany(UserData::class);
+        return $this->belongsTo(TechData::class, 'neededTech');
     }
 }
