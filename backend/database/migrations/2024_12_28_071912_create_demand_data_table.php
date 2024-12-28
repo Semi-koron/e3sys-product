@@ -13,11 +13,9 @@ return new class extends Migration
     {
         Schema::create('demand_data', function (Blueprint $table) {
             $table->id();
-            $table->string('demandName');
-            $table->string('startTime');
-            $table->string('endTime');
-            $table->foreignId('wantTech')->nullable()->constrained('tech_data');
-            $table->foreignId('joinUser')->nullable()->constrained('user_data')->cascadeOnDelete();
+            $table->string('name');
+            $table->string('start_date');
+            $table->string('end_date');
             $table->timestamps();
         });
     }
