@@ -12,13 +12,4 @@ class User extends Authenticatable
 
     protected $fillable = ['name', 'email', 'password', 'firebase_uid'];
     protected $hidden = ['password', 'remember_token'];
-
-    public function demands()
-    {
-        return $this->belongsToMany(DemandData::class, 'user_demand', 'user_id', 'demand_id');
-    }
-
-    public function masteredTech()
-    {
-        return $this->belongsToMany(TechData::class, 'user_tech', 'user_id', 'tech_id');
-    }}
+}
