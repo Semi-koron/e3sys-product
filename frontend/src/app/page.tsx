@@ -28,7 +28,6 @@ export default function Home() {
         <Profile />
         <Survey />
         <Graph />
-        <button onClick={handleClick}>テスト</button>
       </main>
     </div>
   );
