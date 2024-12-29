@@ -14,7 +14,6 @@ Route::get('/test', function () {
     return response()->json([
         'message' => 'Hello, World!'
     ]);
-
 });
 
 Route::post('/echo', function (Request $request) {

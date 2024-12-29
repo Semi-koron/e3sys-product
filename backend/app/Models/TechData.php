@@ -28,5 +28,6 @@ class TechData extends Model
     public function children()
     {
         return $this->belongsToMany(TechData::class)->withTimestamps();
+
     }
 }

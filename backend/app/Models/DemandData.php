@@ -19,4 +19,5 @@ class DemandData extends Model
     {
         return $this->belongsToMany(UserData::class)->withTimestamps();
     }
+
 }

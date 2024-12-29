@@ -9,7 +9,7 @@ class UserData extends Model
 {
     /** @use HasFactory<\Database\Factories\UserDataFactory> */
     use HasFactory;
-
+  
     public function learned()
     {
         return $this->belongsToMany(TechData::class)->withTimestamps();
