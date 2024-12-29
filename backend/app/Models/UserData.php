@@ -9,34 +9,14 @@ class UserData extends Model
 {
     /** @use HasFactory<\Database\Factories\UserDataFactory> */
     use HasFactory;
-
-    /**
-     * The join that belong to the UserData
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function join(): BelongsToMany
+  
+    public function learned()
     {
-        return $this->belongsToMany(DemandData::class);
+        return $this->belongsToMany(TechData::class)->withTimestamps();
     }
 
-    /**
-     * The master that belong to the UserData
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function master(): BelongsToMany
+    public function join()
     {
-        return $this->belongsToMany(TechData::class);
-    }
-
-    /**
-     * The mastering that belong to the UserData
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function mastering(): BelongsToMany
-    {
-        return $this->belongsToMany(TechData::class);
+        return $this->belongsToMany(DemandData::class)->withTimestamps();
     }
 }

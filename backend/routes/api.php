@@ -19,7 +19,7 @@ Route::get('/test', function () {
 Route::post('/echo', function (Request $request) {
     return response()->json([
         'message' => $request->input('question')
-    ]);
+ ]);
 })->middleware(FirebaseTokenAuth::class);
 
 //middlewareを使わない

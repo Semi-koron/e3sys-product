@@ -10,28 +10,14 @@ class DemandData extends Model
     /** @use HasFactory<\Database\Factories\DemandDataFactory> */
     use HasFactory;
 
-    protected $fillable = ['demandName','startTime', 'endTime','wantTech','joinUser'];
-
-
-    /**
-     * The joined that belong to the DemandData
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function joined(): BelongsToMany
+    public function need()
     {
-         return $this->belongsToMany(UserData::class, 'user_demand', 'demand_data_id', 'user_data_id');
+        return $this->belongsToMany(TechData::class)->withTimestamps();
     }
 
-    /**
-     * The want that belong to the DemandData
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function want(): BelongsToMany
+    public function joined()
     {
-         return $this->belongsToMany(DemandData::class, 'user_demand', 'user_data_id', 'demand_data_id');
+        return $this->belongsToMany(UserData::class)->withTimestamps();
     }
-
 
 }

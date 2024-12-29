@@ -15,5 +15,4 @@ Route::get('/test', function () {
     ]);
 });
 
-Route::get('/', [GeminiController::class, 'index']);
 Route::post('/gemini/post', [GeminiController::class, 'post']);
