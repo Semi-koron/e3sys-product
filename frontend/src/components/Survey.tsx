@@ -2,31 +2,47 @@
 
 import { useState } from "react";
 import { Section } from "@/components/ui/Section";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
 
 const questions = ["", "", ""];
 
 const Survey = () => {
-  const [answers, setAnswers] = useState<Record<string, string>>({
-    question1: "",
-    question2: "",
-    question3: "",
-  });
+  const [isStart, setIsStart] = useState(false);
+  const [text, setText] = useState("");
+  const [answers, setAnswers] = useState<string[]>([]);
+  const [questions, setQuestions] = useState<string[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAnswers((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const response = await fetch("/gemini/post", {
+  const handleSubmit = async () => {
+    if (questions.length === 0) {
+      setAnswers([text, "", ""]);
+    } else if (questions.length === 1) {
+      //新しく追加
+      setAnswers((prev) => [...prev, text]);
+    } else if (questions.length === 2) {
+      setAnswers((prev) => [...prev, text]);
+    }
+    const response = await fetch("http://localhost:8080/api/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(answers),
+      body: JSON.stringify({
+        //ないときはnullを返す
+        question1: questions[0] ?? null,
+        question2: questions[1] ?? null,
+        question3: questions[2] ?? null,
+        answer1: answers[0],
+        answer2: answers[1],
+        answer3: answers[2],
+      }),
     });
 
     if (response.ok) {
       const data = await response.json();
-      console.log("結果:", data.response_text);
+      if(qu)
     } else {
       console.error("送信失敗");
     }
@@ -34,29 +50,36 @@ const Survey = () => {
 
   return (
     <Section title="アンケート">
-      <form onSubmit={handleSubmit}>
-        <ul>
+      {isStart ? (
+        <form>
           {questions.map((question, index) => (
-            <li className="text-black" key={index}>
-              {index + 1}. {question}
-              <input
-                type="text"
-                name={`question${index + 1}`}
-                value={answers[`question${index + 1}`]}
-                onChange={handleChange}
-                className="border border-gray-300 p-2 rounded"
-                required
-              />
-            </li>
+            <div key={index}>
+              <label>
+                {question}
+                <input
+                  type="text"
+                  name={index.toString()}
+                  value={answers[index]}
+                  onChange={handleChange}
+                />
+              </label>
+            </div>
           ))}
-        </ul>
-        <button
-          type="submit"
-          className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
+          <Input setValue={setText}></Input>
+          <Button type="submit" onClick={handleSubmit}>
+            送信
+          </Button>
+        </form>
+      ) : (
+        <Button
+          onClick={() => {
+            setIsStart(true);
+            handleSubmit();
+          }}
         >
-          送信
-        </button>
-      </form>
+          スタート
+        </Button>
+      )}
     </Section>
   );
 };

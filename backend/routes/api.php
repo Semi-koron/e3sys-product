@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GeminiController;
 use App\Http\Middleware\FirebaseTokenAuth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,4 +30,9 @@ Route::post('/echo2', function (Request $request) {
     ]);
 });
 
+Route::post('/gemini-question', [GeminiController::class, 'question']);
+
+Route::get('/gemini-test', [GeminiController::class, 'geminiTest']);
+
 Route::get('/verify-token', [AuthController::class, 'verifyToken']);
+

@@ -3,45 +3,67 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Gemini\Laravel\Facades\Gemini;
+
+use Illuminate\Support\Str;
 
 class GeminiController extends Controller
 {
-    /**
-    * index
-    *
-    * @param  Request  $request
-    */
-    public function index(Request $request)
-    {
-        return view('index');
-    }
-
     /**
     * post
     *
     * @param  Request  $request
     */
-    public function post(Request $request)
+    public function question(Request $request)
     {
         $question1 = $request->input('question1');
+        $answer1 = $request->input('answer1');
         $question2 = $request->input('question2');
+        $answer2 = $request->input('answer2');
         $question3 = $request->input('question3');
-
-        $sentence ="あなたは三つの質問に対する答えを受け取ります。一つ目は「今、どんなプログラミング言語に興味がありますか？」という質問です。
-        二つ目は「 プログラミングで作りたいものはありますか？」という質問です。三つ目は「プログラミング学習経験はありますか？」という質問です。
-        そして、一つ目の質問に対する答えが[$question1]です。二つ目の質問に対する答えは[$question2]です。三つ目に対する答えは[$question3]です。
-        これらの回答からデータを元にユーザが学び始めるべき技術を箇条書きで上位3書き出して下さい。箇条書きは技術の名前だけかつ三行以内に収めてください。
-        詳細等は絶対書かずにこの三つだけ表示して下さい。
-        ";
+        $answer3 = $request->input('answer3');
+        $sentence = "";
+        if($question1 == null){
+            $sentence ="あなたはエンジニアが技術を習得する際のアドバイザーです。現在一人のエンジニアがあなたにどのような技術を習得するべきか相談してきました。3つの質問とエンジニアからの回答で、3つほど技術を提示する予定です。また提示してよい技術はHTML.CSS.JavaScript.Sass.React.Vue.js.Redux.Next.js.Node.js.Express.js.NestJS.Ruby on Rails.Django.Flask.AWS.Amazon S3.Amazon EC2.Docker.Kubernetes.Terraform.Swift.UIKit.Kotlin.Jetpack Compose.React Native.Flutter.Unity.C#.Unreal Engine.C++.Godot.GraphQL.MongoDB.PostgreSQL.SQLite.Git.GitHub.GitLab.Jenkins.CircleCI.Webpack.Vite.ESLint.Prettier.Three.js.AR.js.TensorFlow.js.PyTorch.OpenCV.Rustです。
+            最初の質問をしてください。またマークダウンは使用できません。";
+        }
+        if($question1 != null && $question2 == null){
+            $sentence ="あなたはエンジニアが技術を習得する際のアドバイザーです。現在一人のエンジニアがあなたにどのような技術を習得するべきか相談してきました。3つの質問とエンジニアからの回答で、3つほど技術を提示する予定です。また提示してよい技術はHTML.CSS.JavaScript.Sass.React.Vue.js.Redux.Next.js.Node.js.Express.js.NestJS.Ruby on Rails.Django.Flask.AWS.Amazon S3.Amazon EC2.Docker.Kubernetes.Terraform.Swift.UIKit.Kotlin.Jetpack Compose.React Native.Flutter.Unity.C#.Unreal Engine.C++.Godot.GraphQL.MongoDB.PostgreSQL.SQLite.Git.GitHub.GitLab.Jenkins.CircleCI.Webpack.Vite.ESLint.Prettier.Three.js.AR.js.TensorFlow.js.PyTorch.OpenCV.Rustです。
+            一つ目の質問は既に終わっており、" .
+            $question1 . "という質問に対して、" . $answer1 . "という回答がありました。2つ目の質問をしてください。またマークダウンは使用できません。";
+        }
+        if($question2 != null && $question3 == null){
+            $sentence ="あなたはエンジニアが技術を習得する際のアドバイザーです。現在一人のエンジニアがあなたにどのような技術を習得するべきか相談してきました。3つの質問とエンジニアからの回答で、3つほど技術を提示する予定です。また提示してよい技術はHTML.CSS.JavaScript.Sass.React.Vue.js.Redux.Next.js.Node.js.Express.js.NestJS.Ruby on Rails.Django.Flask.AWS.Amazon S3.Amazon EC2.Docker.Kubernetes.Terraform.Swift.UIKit.Kotlin.Jetpack Compose.React Native.Flutter.Unity.C#.Unreal Engine.C++.Godot.GraphQL.MongoDB.PostgreSQL.SQLite.Git.GitHub.GitLab.Jenkins.CircleCI.Webpack.Vite.ESLint.Prettier.Three.js.AR.js.TensorFlow.js.PyTorch.OpenCV.Rustです。
+            一つ目の質問は既に終わっており、" .
+            $question1 . "という質問に対して、" . $answer1 . "という回答がありました。2つ目の質問は既に終わっており、" .
+            $question2 . "という質問に対して、" . $answer2 . "という回答がありました。3つ目の質問をしてください。またマークダウンは使用できません。";
+        }
+        if($question3 != null){
+            $sentence ="あなたはエンジニアが技術を習得する際のアドバイザーです。現在一人のエンジニアがあなたにどのような技術を習得するべきか相談してきました。3つの質問とエンジニアからの回答で、3つほど技術を提示してください。また提示してよい技術はHTML.CSS.JavaScript.Sass.React.Vue.js.Redux.Next.js.Node.js.Express.js.NestJS.Ruby on Rails.Django.Flask.AWS.Amazon S3.Amazon EC2.Docker.Kubernetes.Terraform.Swift.UIKit.Kotlin.Jetpack Compose.React Native.Flutter.Unity.C#.Unreal Engine.C++.Godot.GraphQL.MongoDB.PostgreSQL.SQLite.Git.GitHub.GitLab.Jenkins.CircleCI.Webpack.Vite.ESLint.Prettier.Three.js.AR.js.TensorFlow.js.PyTorch.OpenCV.Rustです。
+            一つ目の質問は既に終わっており、" .
+            $question1 . "という質問に対して、" . $answer1 . "という回答がありました。2つ目の質問は既に終わっており、" .
+            $question2 . "という質問に対して、" . $answer2 . "という回答がありました。3つ目の質問は既に終わっており、" .
+            $question3 . "という質問に対して、" . $answer3 . "という回答がありました。エンジニアに提示する技術を選んでください。またマークダウンは使用できません。";
+        }
         // .env に設定したAPIキーを取得
-        $yourApiKey = getenv('GEMINI_API_KEY');  // .env からAPIキーを取得
-        $client = Gemini::client($yourApiKey);  // Geminiクライアントを作成
 
         // Gemini APIにリクエストして応答を取得
-        $result = $client->geminiPro()->generateContent($sentence);
+        $result = Gemini::geminiPro()->generateContent($sentence);
         $response_text = $result->text();  // Gemini からの応答を取得
 
-        // 応答を画面に表示
-        return view('index', compact('sentence', 'response_text'));
+        // json形式で返す
+        return response()->json([
+            'response' => $response_text
+        ]);
+    }
+
+    function geminiTest (Request $request) {
+        $toGeminiCommand = "こんにちは";
+
+        $result = Gemini::geminiPro()->generateContent('Hello');
+
+        $response_text = $result->text();
+
+        return response()->json($response_text);
     }
 }

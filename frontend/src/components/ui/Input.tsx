@@ -2,12 +2,12 @@ import React, { HTMLInputTypeAttribute } from "react";
 
 type InputProps = {
   title?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setValue?: (value: string) => void;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 const Input: React.FC<InputProps> = ({
   title,
-  onChange,
+  setValue,
   ...props
 }: InputProps) => {
   return (
@@ -17,7 +17,13 @@ const Input: React.FC<InputProps> = ({
       )}
       <input
         {...props}
-        onChange={onChange}
+        onChange={
+          setValue
+            ? (e) => {
+                setValue(e.target.value);
+              }
+            : undefined
+        }
         className="bg-slate-300 h-10 rounded-lg px-4 text-black"
       />
     </div>
