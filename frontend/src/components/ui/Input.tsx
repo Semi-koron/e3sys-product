@@ -2,12 +2,12 @@ import React, { HTMLInputTypeAttribute } from "react";
 
 type InputProps = {
   title?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setValue?: (value: string) => void;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 const Input: React.FC<InputProps> = ({
   title,
-  onChange,
+  setValue,
   ...props
 }: InputProps) => {
   return (
