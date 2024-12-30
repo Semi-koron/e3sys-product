@@ -5,9 +5,41 @@ import Header from "@/components/Header";
 import Input from "@/components/ui/Input";
 import { Section } from "@/components/ui/Section";
 import Button from "@/components/ui/Button";
+import TechSelector from "@/components/TechSelector";
+import axios from "axios";
 
 export default function Home() {
   const [name, setName] = useState("");
+  const [techIds, setTechIds] = useState<number[]>([]);
+
+  const saveProfile = async () => {
+    try {
+      // Firebaseトークンを取得
+      const token = sessionStorage.getItem("token");
+      // bearerToken()ヘッダーにトークンをセット
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      // トークンを認証
+      const res = await axios.get("http://localhost:8080/api/verify-token");
+      // トークンが正常ならば、uuidを取得
+      if (!res.data.uid) {
+        throw new Error("uuidが取得できませんでした");
+      }
+      const uuid = res.data.uid;
+
+      // プロフィールを保存
+      await axios.post("http://localhost:8080/api/user-data", {
+        uuid,
+        name,
+        techIds,
+      });
+
+      alert("保存しました");
+    } catch (e) {
+      console.error(e);
+      alert("保存に失敗しました");
+    }
+  };
+
   return (
     <div className="bg-orange-500 min-h-screen p-8">
       <div className="flex justify-between items-center mb-4">
@@ -23,8 +55,8 @@ export default function Home() {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-
-          <Button>保存</Button>
+          <TechSelector setTechIds={setTechIds} techIds={techIds} />
+          <Button onClick={saveProfile}>保存</Button>
         </Section>
       </main>
     </div>

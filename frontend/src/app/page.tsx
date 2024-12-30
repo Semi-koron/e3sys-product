@@ -5,16 +5,6 @@ import Survey from "@/components/Survey";
 import Graph from "@/components/Graph";
 
 export default function Home() {
-  const handleClick = async () => {
-    const test = await fetch("http://localhost:8080/api/test", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await test.json();
-    console.log(data);
-  };
   return (
     <div className="bg-orange-500 min-h-screen p-8">
       <div className="flex justify-between items-center mb-4">
@@ -27,7 +17,6 @@ export default function Home() {
         <Profile />
         <Survey />
         <Graph />
-        <button onClick={handleClick}>テスト</button>
       </main>
     </div>
   );

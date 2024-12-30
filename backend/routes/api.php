@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserDataController;
 use App\Http\Middleware\FirebaseTokenAuth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,5 +29,7 @@ Route::post('/echo2', function (Request $request) {
         'question' => $request->input('question')
     ]);
 });
+
+Route::post('/user-data', [UserDataController::class, 'store']);
 
 Route::get('/verify-token', [AuthController::class, 'verifyToken']);
