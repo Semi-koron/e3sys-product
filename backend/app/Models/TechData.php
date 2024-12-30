@@ -12,22 +12,22 @@ class TechData extends Model
 
     public function learn()
     {
-        return $this->belongsToMany(UserData::class)->withTimestamps();
+        return $this->belongsToMany(UserData::class, 'tech_user')->withTimestamps();
     }
 
     public function needed()
     {
-        return $this->belongsToMany(DemandData::class)->withTimestamps();
+        return $this->belongsToMany(DemandData::class, 'demand_tech')->withTimestamps();
     }
 
     public function parent()
     {
-        return $this->belongsToMany(TechData::class)->withTimestamps();
+        return $this->belongsToMany(TechData::class, 'ptech_ctech')->withTimestamps();
     }
 
     public function children()
     {
-        return $this->belongsToMany(TechData::class)->withTimestamps();
+        return $this->belongsToMany(TechData::class, 'ptech_ctech')->withTimestamps();
 
     }
 }

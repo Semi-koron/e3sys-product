@@ -12,12 +12,12 @@ class DemandData extends Model
 
     public function need()
     {
-        return $this->belongsToMany(TechData::class)->withTimestamps();
+        return $this->belongsToMany(TechData::class, 'demand_tech')->withTimestamps();
     }
 
     public function joined()
     {
-        return $this->belongsToMany(UserData::class)->withTimestamps();
+        return $this->belongsToMany(UserData::class, 'demand_user')->withTimestamps();
     }
 
 }

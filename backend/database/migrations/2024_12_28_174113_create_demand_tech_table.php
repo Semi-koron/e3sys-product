@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('demand_tech', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tech_data_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('demand_data_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('tech_data_id')->references('id')->on('tech_data') ->constrained()->cascadeOnDelete();
+            $table->foreignId('demand_data_id')->references('id')->on('demand_data') ->constrained()->cascadeOnDelete();
             $table->unique(['tech_data_id', 'demand_data_id']);
             $table->timestamps();
         });
