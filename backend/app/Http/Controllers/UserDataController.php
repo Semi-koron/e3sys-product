@@ -77,12 +77,30 @@ class UserDataController extends Controller
         //
     }
 
-    public function search(Request $reaquest){
+    public function search(Request $request)
+    {
         $uuid = $request->input('uuid');
         $userData = UserData::where('uuid', $uuid)->first();
+
         if(!$userData){
             return response()->json(['error' => 'User not found'], 404);
         }
         return response()->json($userData);
     }
+
+    public function addDemandToUser(Request $request)
+    {
+      
+        $uuid = $request->input('uuid');
+        $demand_data_id = $request->input('demandid');
+        
+        $user = UserData::where('uuid', $uuid)->first();
+        
+        if(!$user){
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        $user->join()->attach($demand_data_id);
+        return response()->json(['message' => 'Demand IDs added successfully']);
+}
 }

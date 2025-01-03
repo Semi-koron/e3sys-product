@@ -6,13 +6,14 @@ use App\Http\Controllers\GeminiController;
 use App\Http\Middleware\FirebaseTokenAuth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TechUserController;
+use App\Http\Controllers\DemandDataController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
 Route::get('/test', function () {
-    //テストのテキストをjson形式で返す
     return response()->json([
         'message' => 'Hello, World!'
     ]);
@@ -32,8 +33,10 @@ Route::post('/echo2', function (Request $request) {
 });
 
 Route::post('/user-data', [UserDataController::class, 'store']);
-Route::post('/gemini-question', [GeminiController::class, 'question']);
+Route::post('/userdata/join-demand', [UserDataController::class, 'addDemandToUser']);
+Route::post('/demand/participants', [DemandDataController::class, 'getParticipants']);
 
+Route::post('/gemini-question', [GeminiController::class, 'question']);
 Route::get('/gemini-test', [GeminiController::class, 'geminiTest']);
 
 Route::get('/verify-token', [AuthController::class, 'verifyToken']);

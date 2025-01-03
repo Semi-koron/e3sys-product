@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_data_id')->references('id')->on('user_data')->constrained()->cascadeOnDelete();
             $table->foreignId('tech_data_id')->references('id')->on('tech_data') ->constrained()->cascadeOnDelete();
             $table->unique(['user_data_id', 'tech_data_id']);
-            $table->string('status');
+            $table->enum('status', ['mastering', 'mastered']);
             $table->timestamps();
         });
     }
