@@ -17,7 +17,7 @@ const Input: React.FC<InputProps> = ({
       )}
       <input
         {...props}
-        onChange={onChange}
+        onChange={(e) => setValue && setValue(e.target.value)}
         className="bg-slate-300 h-10 rounded-lg px-4 text-black focus:outline-none"
       />
     </div>

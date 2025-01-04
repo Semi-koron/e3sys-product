@@ -42,7 +42,6 @@ const Survey = () => {
 
     if (response.ok) {
       const data = await response.json();
-      if(qu)
     } else {
       console.error("送信失敗");
     }

@@ -1,9 +1,14 @@
 "use client";
-import { useState } from "react";
-import { CheckBox } from "@/components/ui/CheckBox";
-import { Section } from "@/components/ui/Section";
+import type { TechData } from "@/app/types/Tech";
+import dagre from "dagre";
 
-const techData = [
+import "@xyflow/react/dist/style.css";
+import Graph from "@/components/Graph";
+
+const masteredTech: number[] = [1, 3, 5, 9]; // 習得済みの技術ID
+const masteringTech: number[] = [6, 15]; // 習得中の技術ID
+
+export const techData = [
   // フロントエンド技術
   { techId: 1, techName: "HTML", needTech: [], neededTech: [2, 3] },
   { techId: 2, techName: "CSS", needTech: [1], neededTech: [4] },
@@ -67,27 +72,112 @@ const techData = [
   { techId: 50, techName: "Rust", needTech: [], neededTech: [] },
 ];
 
-type TechSelectorProps = {
-  setTechIds: React.Dispatch<React.SetStateAction<number[]>>;
-  techIds: number[];
+const generateGraph = (data: TechData[]) => {
+  const nodes = data.map((tech) => ({
+    id: tech.techId.toString(),
+    position: { x: Math.random() * 500, y: Math.random() * 500 },
+    data: { label: tech.techName },
+  }));
+
+  const edges: { id: string; source: string; target: string }[] = [];
+  data.forEach((tech) => {
+    tech.needTech.forEach((dependencyId) => {
+      edges.push({
+        id: `e${dependencyId}-${tech.techId}`,
+        source: dependencyId.toString(),
+        target: tech.techId.toString(),
+      });
+    });
+  });
+
+  const positionedGraph = applyDagreLayout({ nodes, edges });
+  return positionedGraph;
 };
 
-const TechSelector = ({ setTechIds, techIds }: TechSelectorProps) => {
+export function applyDagreLayout(data: {
+  nodes: {
+    id: string;
+    position: { x: number; y: number };
+    data: { label: string };
+  }[];
+  edges: { id: string; source: string; target: string }[];
+}) {
+  const graph = new dagre.graphlib.Graph();
+  graph.setDefaultEdgeLabel(() => ({}));
+
+  const nodeWidth = 180;
+  const nodeHeight = 50;
+
+  // グラフの設定
+  graph.setGraph({ rankdir: "TB" }); // TB = Top-Bottom (上から下)
+
+  // ノードを追加
+  data.nodes.forEach((node) => {
+    graph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
+  });
+
+  // エッジを追加
+  data.edges.forEach((edge) => {
+    graph.setEdge(edge.source, edge.target);
+  });
+
+  // レイアウト計算
+  dagre.layout(graph);
+
+  // 新しい位置を更新
+  const positionedNodes = data.nodes.map((node) => {
+    const nodeWithPosition = graph.node(node.id);
+    return {
+      ...node,
+      position: {
+        x: nodeWithPosition.x - nodeWidth / 2,
+        y: nodeWithPosition.y - nodeHeight / 2,
+      },
+    };
+  });
+
+  return { nodes: positionedNodes, edges: data.edges };
+}
+
+const TechGraph = () => {
+  const initialNodes = generateGraph(techData).nodes;
+  const initialEdges = generateGraph(techData).edges;
+
+  // ノードとエッジのスタイルを更新
+  const getNodeStyle = (node: any) => {
+    if (masteredTech.includes(Number(node.id))) {
+      return "mastered"; // 緑色
+    } else if (masteringTech.includes(Number(node.id))) {
+      return "mastering"; // 青色
+    }
+    return "";
+  };
+
+  const getEdgeStyle = (edge: any) => {
+    const sourceMastered = masteredTech.includes(Number(edge.source));
+    const targetMastered = masteredTech.includes(Number(edge.target));
+    const sourceMastering = masteringTech.includes(Number(edge.source));
+    const targetMastering = masteringTech.includes(Number(edge.target));
+
+    if (sourceMastered && targetMastered) {
+      return "mastered"; // 緑色
+    } else if (sourceMastering && targetMastering) {
+      return "mastering"; // 青色
+    }
+    return ""; // デフォルト色
+  };
+
   return (
-    <Section title="技術選択">
-      <div className="h-60 overflow-y-auto">
-        <ul>
-          {techData.map((tech, index) => (
-            <li key={index}>
-              <CheckBox setValue={setTechIds} techId={techData[index].techId}>
-                {tech.techName}
-              </CheckBox>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </Section>
+    <section className="bg-white p-4 rounded-lg shadow-md">
+      <h2 className="text-lg text-black">グラフ</h2>
+      <Graph
+        nodeColor={initialNodes.map((node) => getNodeStyle(node))}
+        edgeColor={initialEdges.map((edge) => getEdgeStyle(edge))}
+        graphNode={initialNodes}
+        graphEdge={initialEdges}
+      />
+    </section>
   );
 };
 
-export default TechSelector;
+export default TechGraph;
