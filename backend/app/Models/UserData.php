@@ -22,4 +22,8 @@ class UserData extends Model
     {
         return $this->belongsToMany(DemandData::class, 'demand_user')->withTimestamps();
     }
+
+    public function demands(){
+        return $this->belongsToMany(Demand::class, 'demand_user', 'user_data_id', 'demand_data_id');
+    }
 }

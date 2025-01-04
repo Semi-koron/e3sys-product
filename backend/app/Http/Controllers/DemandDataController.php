@@ -62,4 +62,17 @@ class DemandDataController extends Controller
     {
         //
     }
+
+   public function getParticipants($demandID)
+    {
+        $demand = Demand::find($demandID);
+    
+        if (!$demand) {
+        return response()->json(['error' => 'Demand not found'], 404);
+        }
+        
+        $participants = $demand->participants;
+
+        return response()->json($participants);
+    }
 }
