@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [echo, setEcho] = useState("");
   const router = useRouter();
 
@@ -49,35 +50,74 @@ const Login = () => {
     }
   };
 
+  const isFormValid = email.trim() !== "" && password.trim() !== "";
+
   return (
     <>
-      <div>
-        <h2>ログイン</h2>
-        <form>
-          <div>
-            <label htmlFor="email">メールアドレス</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="password">パスワード</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button type="button" onClick={handleLogin}>
-            ログイン
-          </button>
-        </form>
+      <div className="min-h-screen flex items-center justify-center bg-orange-500 p-4">
+        <div className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-md">
+          <h2 className="text-3xl font-extrabold text-center text-gray-800 mb-8">
+            ようこそ
+          </h2>
+          <form>
+            <div className="mb-6">
+              <label
+                htmlFor="email"
+                className="block text-gray-700 font-medium"
+              >
+                メールアドレス
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
+                placeholder="example@example.com"
+              />
+            </div>
+            <div className="mb-6">
+              <label
+                htmlFor="password"
+                className="block text-gray-700 font-medium"
+              >
+                パスワード
+              </label>
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
+              />
+              <div className="flex items-center mt-2">
+                <input
+                  type="checkbox"
+                  id="show-password"
+                  className="mr-2"
+                  checked={showPassword}
+                  onChange={() => setShowPassword(!showPassword)}
+                />
+                <label htmlFor="show-password" className="text-sm text-gray-600">
+                  パスワードを表示
+                </label>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={handleLogin}
+              disabled={!isFormValid}
+              className={`w-full py-3 rounded-lg font-bold text-white transition duration-300 ${isFormValid
+                  ? "bg-blue-500 hover:bg-blue-600 active:bg-blue-700"
+                  : "bg-gray-300 cursor-not-allowed"
+                }`}
+            >
+              ログイン
+            </button>
+          </form>
+        </div>
       </div>
       <div>
         <h2>エコー</h2>
