@@ -15,7 +15,7 @@ import { fetchTechData } from "../lib/server-action";
 
 export default function GraphEditting() {
   const [techData, setTechData] = useState<TechData[]>([]);
-  const [selectParentTechId, setSelectParentTechId] = useState<number[]>([]);
+  const [selectWantTechId, setSelectWantTechId] = useState<number[]>([]);
   const [startDay, setStartDay] = useState<string>("");
   const [finishDay, setFinishDay] = useState<string>("");
   const [demandName, setDemandName] = useState("");
@@ -42,11 +42,7 @@ export default function GraphEditting() {
         <Section title="案件追加">
           <Input title="案件名" setValue={setDemandName} />
           <h2 className="text-lg mb-2 bg-white text-black">必要な技術</h2>
-          <TechSelector
-            techData={techData}
-            setTechIds={setSelectParentTechId}
-            techIds={selectParentTechId}
-          />
+          <TechSelector techData={techData} setTechIds={setSelectWantTechId} />
           <div className="flex flex-col gap-4 p-3">
             <h2 className="text-lg mb-2 bg-white text-black">開始日</h2>
             <input type="date" onChange={(e) => setStartDay(e.target.value)} />
