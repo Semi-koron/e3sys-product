@@ -4,17 +4,30 @@ import Header from "@/components/Header";
 import Graph from "@/components/Graph";
 import { applyDagreLayout } from "@/components/Graph";
 import type { TechData } from "../types/Tech";
-import { techData } from "@/components/TechGraph";
 import { useNodesState, useEdgesState, Controls } from "@xyflow/react";
 import { Section } from "@/components/ui/Section";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TechSelector from "@/components/TechSelector";
 import axios from "axios";
 import { fetchTechData } from "../lib/server-action";
 
 export default function GraphEditting() {
+  const [techData, setTechData] = useState<TechData[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchTechData();
+      const edges = generateGraph(data).edges;
+      const nodes = generateGraph(data).nodes;
+      setTechData(data);
+      setEdges(edges);
+      setNodes(nodes);
+    };
+    fetchData();
+  }, []);
+
   const generateGraph = (data: TechData[]) => {
     const nodes = data.map((tech) => ({
       id: tech.techId.toString(),
@@ -44,11 +57,6 @@ export default function GraphEditting() {
   const [selectChildTechId, setSelectChildTechId] = useState<number[]>([]);
   const [selectParentTechId, setSelectParentTechId] = useState<number[]>([]);
   const [techName, setTechName] = useState("");
-
-  const getTechData = async () => {
-    const data = await fetchTechData();
-    console.log(data);
-  };
 
   const addNode = async () => {
     const req = {
@@ -101,16 +109,17 @@ export default function GraphEditting() {
           <Input title="技術名" setValue={setTechName} />
           <h2 className="text-lg mb-2 bg-white text-black">技術関係(親)</h2>
           <TechSelector
+            techData={techData}
             setTechIds={setSelectParentTechId}
             techIds={selectParentTechId}
           />
           <h2 className="text-lg mb-2 bg-white text-black">技術関係(子)</h2>
           <TechSelector
+            techData={techData}
             setTechIds={setSelectChildTechId}
             techIds={selectChildTechId}
           />
           <Button onClick={addNode}>追加</Button>
-          <Button onClick={getTechData}>データ取得</Button>
         </Section>
       </main>
     </div>
