@@ -5,4 +5,20 @@ type TechData = {
   neededTech: number[];
 };
 
-export type { TechData };
+type fetchTechData = {
+  id: number;
+  name: string;
+  created_at: string;
+  updated_at: string;
+};
+
+type ResTechData = {
+  id: number;
+  name: string;
+  children: fetchTechData[];
+  parent: fetchTechData[];
+  created_at: string;
+  updated_at: string;
+};
+
+export type { TechData, ResTechData };

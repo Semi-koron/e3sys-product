@@ -1,3 +1,5 @@
+import { ResTechData, TechData } from "../types/Tech";
+
 const basePath = "http://localhost:8080";
 
 export const fetchJson = async <T>(path: string, options: RequestInit) => {
@@ -27,4 +29,18 @@ export const fetchURL = async (
   }
 
   throw new Error(`Failed to fetch: ${options.method} ${path}`);
+};
+
+export const fetchTechData = async () => {
+  const res = await fetchJson<ResTechData[]>("/api/tech-data", {
+    method: "GET",
+  });
+  // TechDataに変換
+  const techData: TechData[] = res.map((tech) => ({
+    techId: tech.id,
+    techName: tech.name,
+    needTech: tech.children.map((child) => child.id),
+    neededTech: tech.parent.map((parent) => parent.id),
+  }));
+  return techData;
 };

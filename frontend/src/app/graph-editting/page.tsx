@@ -12,6 +12,7 @@ import Button from "@/components/ui/Button";
 import { useState } from "react";
 import TechSelector from "@/components/TechSelector";
 import axios from "axios";
+import { fetchTechData } from "../lib/server-action";
 
 export default function GraphEditting() {
   const generateGraph = (data: TechData[]) => {
@@ -43,6 +44,11 @@ export default function GraphEditting() {
   const [selectChildTechId, setSelectChildTechId] = useState<number[]>([]);
   const [selectParentTechId, setSelectParentTechId] = useState<number[]>([]);
   const [techName, setTechName] = useState("");
+
+  const getTechData = async () => {
+    const data = await fetchTechData();
+    console.log(data);
+  };
 
   const addNode = async () => {
     const req = {
@@ -104,6 +110,7 @@ export default function GraphEditting() {
             techIds={selectChildTechId}
           />
           <Button onClick={addNode}>追加</Button>
+          <Button onClick={getTechData}>データ取得</Button>
         </Section>
       </main>
     </div>
