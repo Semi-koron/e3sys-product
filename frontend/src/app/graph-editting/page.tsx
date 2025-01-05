@@ -11,6 +11,7 @@ import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import { useState } from "react";
 import TechSelector from "@/components/TechSelector";
+import axios from "axios";
 
 export default function GraphEditting() {
   const generateGraph = (data: TechData[]) => {
@@ -43,14 +44,38 @@ export default function GraphEditting() {
   const [selectParentTechId, setSelectParentTechId] = useState<number[]>([]);
   const [techName, setTechName] = useState("");
 
-  const addNode = () => {
-    const newId = Math.max(...nodes.map((node) => parseInt(node.id))) + 1;
-    const newNode = {
-      id: newId.toString(),
-      position: { x: Math.random() * 500, y: Math.random() * 500 },
-      data: { label: techName },
+  const addNode = async () => {
+    const req = {
+      techName: techName,
+      parentTechIds: selectParentTechId,
+      childTechIds: selectChildTechId,
     };
-    setNodes([...nodes, newNode]);
+
+    const res = await axios.post("http://localhost:8080/api/tech-data", req);
+
+    console.log(res);
+    // axios.post("/api/tech", req).then((res) => {
+    //   const newTech = res.data;
+    //   const newNodes = [
+    //     ...nodes,
+    //     {
+    //       id: newTech.techId.toString(),
+    //       position: { x: Math.random() * 500, y: Math.random() * 500 },
+    //       data: { label: newTech.techName },
+    //     },
+    //   ];
+    //   const newEdges = [
+    //     ...edges,
+    //     ...newTech.needTech.map((dependencyId: number) => ({
+    //       id: `e${dependencyId}-${newTech.techId}`,
+    //       source: dependencyId.toString(),
+    //       target: newTech.techId.toString(),
+    //     })),
+    //   ];
+
+    //   setNodes(newNodes);
+    //   setEdges(newEdges);
+    // });
   };
 
   return (

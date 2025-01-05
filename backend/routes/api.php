@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserDataController;
+use App\Http\Controllers\TechDataController;
 use App\Http\Controllers\GeminiController;
 use App\Http\Middleware\FirebaseTokenAuth;
 use Illuminate\Http\Request;
@@ -32,6 +33,8 @@ Route::post('/echo2', function (Request $request) {
 });
 
 Route::post('/user-data', [UserDataController::class, 'store']);
+Route::post('/tech-data', [TechDataController::class, 'store']);
+Route::get('/tech-data', [TechDataController::class, 'index']);
 Route::post('/gemini-question', [GeminiController::class, 'question']);
 
 Route::get('/gemini-test', [GeminiController::class, 'geminiTest']);
