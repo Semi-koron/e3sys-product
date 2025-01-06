@@ -33,6 +33,7 @@ Route::post('/echo2', function (Request $request) {
 });
 
 Route::post('/user-data', [UserDataController::class, 'store']);
+Route::post('/user-data/get', [UserDataController::class, 'show']);
 Route::post('/tech-data', [TechDataController::class, 'store']);
 Route::get('/tech-data', [TechDataController::class, 'index']);
 Route::post('/gemini-question', [GeminiController::class, 'question']);

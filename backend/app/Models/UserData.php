@@ -15,7 +15,7 @@ class UserData extends Model
         return $this->belongsToMany(
             TechData::class,
             'tech_user'
-        )->withTimestamps();
+        )->withPivot('status')->withTimestamps();
     }
 
     public function join()

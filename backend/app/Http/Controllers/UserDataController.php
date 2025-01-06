@@ -31,6 +31,13 @@ class UserDataController extends Controller
         $uuid = $request->input('uuid');
         $name = $request->input('name');
 
+        // 同じuuidが存在するか確認、存在する場合は上書き
+        $existingUserData = UserData::where('uuid', $uuid)->first();
+        if($existingUserData){
+            $existingUserData->name = $name;
+            $existingUserData->save();
+            return response()->json(['message' => 'User data updated']);
+        }
         $userData = new UserData();
         $userData->uuid = $uuid;
         $userData->name = $name;
@@ -48,9 +55,17 @@ class UserDataController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(UserData $userData)
+    public function show(Request $request)
     {
-        //
+        $uuid = $request->input('uuid');
+        //中間テーブルも結合して取得
+        $userData = UserData::with('learned','join')->where('uuid', $uuid)->first();
+
+        return response()->json($userData);
+        if(!$userData){
+            return response()->json(['error' => 'User not found'], 404);
+        }
+        return response()->json($userData);
     }
 
     /**
