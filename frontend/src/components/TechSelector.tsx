@@ -5,11 +5,10 @@ import { Section } from "@/components/ui/Section";
 
 type TechSelectorProps = {
   setTechIds: React.Dispatch<React.SetStateAction<number[]>>;
-  techIds: number[];
   techData: TechData[];
 };
 
-const TechSelector = ({ setTechIds, techIds, techData }: TechSelectorProps) => {
+const TechSelector = ({ setTechIds, techData }: TechSelectorProps) => {
   return (
     <Section title="技術選択">
       <div className="h-60 overflow-y-auto">

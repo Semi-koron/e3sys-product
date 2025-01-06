@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MenuButton from "@/components/Button";
 import Header from "@/components/Header";
 import Input from "@/components/ui/Input";
@@ -7,10 +7,21 @@ import { Section } from "@/components/ui/Section";
 import Button from "@/components/ui/Button";
 import TechSelector from "@/components/TechSelector";
 import axios from "axios";
+import { TechData } from "../types/Tech";
+import { fetchTechData } from "../lib/server-action";
 
 export default function Home() {
   const [name, setName] = useState("");
   const [techIds, setTechIds] = useState<number[]>([]);
+  const [techData, setTechData] = useState<TechData[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchTechData();
+      setTechData(data);
+    };
+    fetchData();
+  }, []);
 
   const saveProfile = async () => {
     try {
@@ -55,7 +66,7 @@ export default function Home() {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-          <TechSelector setTechIds={setTechIds} techIds={techIds} />
+          <TechSelector setTechIds={setTechIds} techData={techData} />
           <Button onClick={saveProfile}>保存</Button>
         </Section>
       </main>

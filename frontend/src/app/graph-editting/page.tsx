@@ -111,14 +111,9 @@ export default function GraphEditting() {
           <TechSelector
             techData={techData}
             setTechIds={setSelectParentTechId}
-            techIds={selectParentTechId}
           />
           <h2 className="text-lg mb-2 bg-white text-black">技術関係(子)</h2>
-          <TechSelector
-            techData={techData}
-            setTechIds={setSelectChildTechId}
-            techIds={selectChildTechId}
-          />
+          <TechSelector techData={techData} setTechIds={setSelectChildTechId} />
           <Button onClick={addNode}>追加</Button>
         </Section>
       </main>
