@@ -8,7 +8,6 @@ import { TechData } from "./types/Tech";
 import { fetchTechData, fetchUserData, tokenVerify } from "./lib/server-action";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import { UserData } from "./types/User";
 
 export default function Home() {
