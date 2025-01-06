@@ -61,11 +61,7 @@ export default function Home() {
       </div>
       <main>
         <Section title="プロフィール" className="flex flex-col gap-4 mb-6">
-          <Input
-            title="名前"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+          <Input title="名前" setValue={setName} />
           <TechSelector setTechIds={setTechIds} techData={techData} />
           <Button onClick={saveProfile}>保存</Button>
         </Section>

@@ -1,4 +1,5 @@
 import { ResTechData, TechData } from "../types/Tech";
+import { ResUserData, UserData } from "../types/User";
 
 const basePath = "http://localhost:8080";
 
@@ -43,4 +44,35 @@ export const fetchTechData = async () => {
     neededTech: tech.parent.map((parent) => parent.id),
   }));
   return techData;
+};
+
+export const fetchUserData = async (uuid: string) => {
+  const res = await fetchJson<ResUserData>("/api/user-data/get", {
+    method: "POST",
+    body: JSON.stringify({ uuid: uuid }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const returndata: UserData = {
+    userId: res.id,
+    userName: res.name,
+    masteredTech: res.learned
+      .filter((tech) => tech.pivot.status === "mastered")
+      .map((tech) => tech.id),
+    learningTech: res.learned
+      .filter((tech) => tech.pivot.status === "mastering")
+      .map((tech) => tech.id),
+  };
+  return returndata;
+};
+
+export const tokenVerify = async (token: string) => {
+  const res = await fetchJson<{ uid: string }>("/api/verify-token", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res.uid;
 };
