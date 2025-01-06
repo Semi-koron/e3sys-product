@@ -38,10 +38,10 @@ class TechDataController extends Controller
 
         // childTechの配列を取得
         $childTech = $request->input('childTechIds');
-        $techData->children()->attach($childTech);
+        $techData->parent()->attach($childTech);
         // parentTechの配列を取得
         $parentTech = $request->input('parentTechIds');
-        $techData->parent()->attach($parentTech);
+        $techData->children()->attach($parentTech);
 
         return response()->json(['message' => 'Tech data created']);
     }
