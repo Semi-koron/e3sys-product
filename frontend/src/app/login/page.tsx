@@ -54,7 +54,7 @@ const Login = () => {
 
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center bg-orange-500 p-4">
+      <div className="min-h-screen flex items-center justify-center bg-orange-400 p-4">
         <div className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-md">
           <h2 className="text-3xl font-extrabold text-center text-gray-800 mb-8">
             ようこそ
@@ -73,7 +73,7 @@ const Login = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300"
                 placeholder="example@example.com"
               />
             </div>
@@ -90,7 +90,7 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300"
               />
               <div className="flex items-center mt-2">
                 <input
@@ -105,21 +105,31 @@ const Login = () => {
                 </label>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={handleLogin}
-              disabled={!isFormValid}
-              className={`w-full py-3 rounded-lg font-bold text-white transition duration-300 ${isFormValid
-                  ? "bg-blue-500 hover:bg-blue-600 active:bg-blue-700"
-                  : "bg-gray-300 cursor-not-allowed"
-                }`}
-            >
-              ログイン
-            </button>
+            <div className="flex justify-center mb-4">
+              <button
+                type="button"
+                onClick={handleLogin}
+                disabled={!isFormValid}
+                className={`w-1/3 py-2 rounded-lg font-bold text-white transition duration-300 ${isFormValid
+                    ? "bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700"
+                    : "bg-gray-300 cursor-not-allowed"
+                  }`}
+              >
+                ログイン
+              </button>
+            </div>
+            <div className="flex justify-center">
+              <button
+                type="button"
+                className="w-1/3 py-2 mt-4 rounded-lg font-bold text-white bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700 transition duration-300"
+              >
+                新規登録
+                </button>
+              </div>
           </form>
         </div>
       </div>
-      <div>
+      {/* <div>
         <h2>エコー</h2>
         <input
           type="text"
@@ -129,7 +139,7 @@ const Login = () => {
         <button type="button" onClick={handleEcho}>
           エコー
         </button>
-      </div>
+      </div> */}
     </>
   );
 };
