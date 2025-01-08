@@ -4,6 +4,8 @@ import { auth } from "../lib/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -67,13 +69,12 @@ const Login = () => {
               >
                 メールアドレス
               </label>
-              <input
+              <Input
                 type="email"
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300"
                 placeholder="example@example.com"
               />
             </div>
@@ -84,13 +85,12 @@ const Login = () => {
               >
                 パスワード
               </label>
-              <input
+              <Input
                 type={showPassword ? "text" : "password"}
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300"
               />
               <div className="flex items-center mt-2">
                 <input
@@ -110,7 +110,7 @@ const Login = () => {
                 type="button"
                 onClick={handleLogin}
                 disabled={!isFormValid}
-                className={`w-1/3 py-2 rounded-lg font-bold text-white transition duration-300 ${isFormValid
+                className={`py-2 px-4 rounded-lg font-bold text-white transition duration-300 ${isFormValid
                     ? "bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700"
                     : "bg-gray-300 cursor-not-allowed"
                   }`}
@@ -119,12 +119,9 @@ const Login = () => {
               </button>
             </div>
             <div className="flex justify-center">
-              <button
-                type="button"
-                className="w-1/3 py-2 mt-4 rounded-lg font-bold text-white bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700 transition duration-300"
-              >
+              <Button type="button">
                 新規登録
-                </button>
+                </Button>
               </div>
           </form>
         </div>
