@@ -1,10 +1,7 @@
 "use client";
 import MenuButton from "@/components/Button";
 import Header from "@/components/Header";
-import Graph from "@/components/Graph";
-import { applyDagreLayout } from "@/components/Graph";
 import type { TechData } from "../types/Tech";
-import { useNodesState, useEdgesState, Controls } from "@xyflow/react";
 import { Section } from "@/components/ui/Section";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
@@ -28,7 +25,15 @@ export default function GraphEditting() {
     fetchData();
   }, []);
 
-  const createDemand = async () => {};
+  const createDemand = async () => {
+    const response = await axios.post("http://localhost:8080/api/demand-data", {
+      name: demandName,
+      end_time: finishDay,
+      start_time: startDay,
+      techId: selectWantTechId,
+    });
+    console.log(response.data);
+  };
 
   return (
     <div className="bg-orange-500 min-h-screen p-8">

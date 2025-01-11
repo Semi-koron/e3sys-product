@@ -5,10 +5,16 @@ import Profile from "@/components/Profile";
 import Survey from "@/components/Survey";
 import TechGraph from "@/components/TechGraph";
 import { TechData } from "./types/Tech";
-import { fetchTechData, fetchUserData, tokenVerify } from "./lib/server-action";
+import {
+  fetchTechData,
+  fetchUserData,
+  fetchDemandData,
+  tokenVerify,
+} from "./lib/server-action";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { UserData } from "./types/User";
+import { Section } from "@/components/ui/Section";
 
 export default function Home() {
   const router = useRouter();
@@ -33,9 +39,12 @@ export default function Home() {
         setMasteringTech(res.learningTech);
         setName(res.userName);
       } catch (e) {
+        router.push("/login");
         return;
       }
       const techData = await fetchTechData();
+      const demandData = await fetchDemandData();
+      console.log(demandData);
       setTechData(techData);
     };
 
@@ -57,6 +66,9 @@ export default function Home() {
           masteredTech={masteredTech}
           masteringTech={masteringTech}
         />
+        <Section title="案件一覧">
+          <h1>test</h1>
+        </Section>
       </main>
     </div>
   );

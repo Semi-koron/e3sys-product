@@ -1,3 +1,4 @@
+import { DemandData, ResDemandData } from "../types/Demand";
 import { ResTechData, TechData } from "../types/Tech";
 import { ResUserData, UserData } from "../types/User";
 
@@ -65,6 +66,23 @@ export const fetchUserData = async (uuid: string) => {
       .map((tech) => tech.id),
   };
   return returndata;
+};
+
+export const fetchDemandData = async () => {
+  const res = await fetchJson<ResDemandData[]>("/api/demand-data", {
+    method: "GET",
+  });
+  const getTechId = (demand: ResDemandData) => {
+    return demand.need.map((tech) => tech.id);
+  };
+  const returnData: DemandData[] = res.map((demand) => ({
+    demandId: demand.id,
+    demandName: demand.name,
+    demandTech: getTechId(demand), // Assuming demandTech is a property in ResDemandData
+    startTime: new Date(demand.start_date), // Assuming startTime is a property in ResDemandData
+    endTime: new Date(demand.end_date), // Assuming endTime is a property in ResDemandData
+  }));
+  return returnData;
 };
 
 export const tokenVerify = async (token: string) => {

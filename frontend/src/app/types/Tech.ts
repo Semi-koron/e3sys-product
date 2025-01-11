@@ -5,7 +5,7 @@ type TechData = {
   neededTech: number[];
 };
 
-type fetchTechData = {
+type FetchTechData = {
   id: number;
   name: string;
   created_at: string;
@@ -15,8 +15,8 @@ type fetchTechData = {
 type ResTechData = {
   id: number;
   name: string;
-  children: fetchTechData[];
-  parent: fetchTechData[];
+  children: FetchTechData[];
+  parent: FetchTechData[];
   created_at: string;
   updated_at: string;
 };
@@ -37,4 +37,4 @@ type pivot = {
   updated_at: string;
 };
 
-export type { TechData, ResTechData };
+export type { TechData, ResTechData, FetchTechData };
