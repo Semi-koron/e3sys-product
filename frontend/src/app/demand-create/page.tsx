@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import TechSelector from "@/components/TechSelector";
 import axios from "axios";
 import { fetchTechData } from "../lib/server-action";
+import { useRouter } from "next/navigation";
 
 export default function GraphEditting() {
   const [techData, setTechData] = useState<TechData[]>([]);
@@ -16,6 +17,7 @@ export default function GraphEditting() {
   const [startDay, setStartDay] = useState<string>("");
   const [finishDay, setFinishDay] = useState<string>("");
   const [demandName, setDemandName] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +34,10 @@ export default function GraphEditting() {
       start_time: startDay,
       techId: selectWantTechId,
     });
-    console.log(response.data);
+    if (response.status === 200) {
+      alert("案件を作成しました");
+      router.push("/");
+    }
   };
 
   return (

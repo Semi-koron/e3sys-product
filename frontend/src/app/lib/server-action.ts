@@ -89,9 +89,9 @@ export const fetchDemandData = async () => {
   const returnData: DemandData[] = res.map((demand) => ({
     demandId: demand.id,
     demandName: demand.name,
-    demandTech: getTechId(demand), // Assuming demandTech is a property in ResDemandData
-    startTime: new Date(demand.start_date), // Assuming startTime is a property in ResDemandData
-    endTime: new Date(demand.end_date), // Assuming endTime is a property in ResDemandData
+    demandTech: getTechId(demand),
+    startTime: new Date(demand.start_date),
+    endTime: new Date(demand.end_date),
   }));
   return returnData;
 };

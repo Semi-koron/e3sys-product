@@ -5,6 +5,7 @@ import Profile from "@/components/Profile";
 import Survey from "@/components/Survey";
 import TechGraph from "@/components/TechGraph";
 import { TechData } from "./types/Tech";
+import { DemandData } from "./types/Demand";
 import {
   fetchTechData,
   fetchUserData,
@@ -14,13 +15,15 @@ import {
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { UserData } from "./types/User";
-import { Section } from "@/components/ui/Section";
+3;
+import DemandList from "@/components/DemandList";
 
 export default function Home() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [masteredTech, setMasteredTech] = useState<number[]>([]);
   const [masteringTech, setMasteringTech] = useState<number[]>([]);
+  const [demandData, setDemandData] = useState<DemandData[]>([]);
 
   const [techData, setTechData] = useState<TechData[]>([]);
 
@@ -44,7 +47,7 @@ export default function Home() {
       }
       const techData = await fetchTechData();
       const demandData = await fetchDemandData();
-      console.log(demandData);
+      setDemandData(demandData);
       setTechData(techData);
     };
 
@@ -66,9 +69,7 @@ export default function Home() {
           masteredTech={masteredTech}
           masteringTech={masteringTech}
         />
-        <Section title="案件一覧">
-          <h1>test</h1>
-        </Section>
+        <DemandList demandData={demandData} />
       </main>
     </div>
   );

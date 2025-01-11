@@ -92,7 +92,7 @@ class UserDataController extends Controller
         //
     }
 
-    public function search(Request $reaquest){
+    public function search(Request $request){
         $uuid = $request->input('uuid');
         $userData = UserData::where('uuid', $uuid)->first();
         if(!$userData){
