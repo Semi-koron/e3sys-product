@@ -29,7 +29,7 @@ const Login = () => {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       // トークンを認証
       const res = await axios.get("http://localhost:8080/api/verify-token");
-      console.log(res.data);
+      router.push("/");
     } catch (err) {
       console.error(err);
     }

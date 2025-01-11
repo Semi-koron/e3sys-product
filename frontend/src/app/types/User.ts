@@ -7,7 +7,7 @@ export type UserData = {
   learningTech: number[];
 };
 
-type fetchUserData = {
+export type fetchUserData = {
   id: number;
   name: string;
   created_at: string;

@@ -52,8 +52,8 @@ export default function GraphEditting() {
 
   const initialNodes = generateGraph(techData).nodes;
   const initialEdges = generateGraph(techData).edges;
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, setNodes, _onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, _onEdgesChange] = useEdgesState(initialEdges);
   const [selectChildTechId, setSelectChildTechId] = useState<number[]>([]);
   const [selectParentTechId, setSelectParentTechId] = useState<number[]>([]);
   const [techName, setTechName] = useState("");

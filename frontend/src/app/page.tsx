@@ -39,6 +39,7 @@ export default function Home() {
         setMasteringTech(res.learningTech);
         setName(res.userName);
       } catch (e) {
+        console.error(e);
         router.push("/login");
         return;
       }
