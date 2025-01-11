@@ -47,6 +47,17 @@ export const fetchTechData = async () => {
   return techData;
 };
 
+export const searchUserExist = async (uuid: string) => {
+  const res = await fetchJson("/api/user-data/search", {
+    method: "POST",
+    body: JSON.stringify({ uuid: uuid }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return res;
+};
+
 export const fetchUserData = async (uuid: string) => {
   const res = await fetchJson<ResUserData>("/api/user-data/get", {
     method: "POST",

@@ -35,6 +35,7 @@ Route::post('/echo2', function (Request $request) {
 
 Route::post('/user-data', [UserDataController::class, 'store']);
 Route::post('/user-data/get', [UserDataController::class, 'show']);
+Route::post('/user-data/search', [UserDataController::class, 'search']);
 Route::post('/tech-data', [TechDataController::class, 'store']);
 Route::get('/tech-data', [TechDataController::class, 'index']);
 

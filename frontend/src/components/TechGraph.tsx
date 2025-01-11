@@ -20,7 +20,7 @@ const generateGraph = (data: TechData[]) => {
 
   const edges: { id: string; source: string; target: string }[] = [];
   data.forEach((tech) => {
-    tech.needTech.forEach((dependencyId) => {
+    tech.neededTech.forEach((dependencyId) => {
       edges.push({
         id: `e${dependencyId}-${tech.techId}`,
         source: dependencyId.toString(),
@@ -87,16 +87,24 @@ const TechGraph = ({
   const initialEdges = generateGraph(techData).edges;
 
   // ノードとエッジのスタイルを更新
-  const getNodeStyle = (node: any) => {
-    if (masteredTech.includes(Number(node.id))) {
+  const getNodeStyle = (node: {
+    id: string;
+    position: { x: number; y: number };
+    data: { label: string };
+  }) => {
+    if (masteredTech.includes(Number(node.id) - 1)) {
       return "mastered"; // 緑色
-    } else if (masteringTech.includes(Number(node.id))) {
+    } else if (masteringTech.includes(Number(node.id) - 1)) {
       return "mastering"; // 青色
     }
     return "";
   };
 
-  const getEdgeStyle = (edge: any) => {
+  const getEdgeStyle = (edge: {
+    id: string;
+    source: string;
+    target: string;
+  }) => {
     const sourceMastered = masteredTech.includes(Number(edge.source));
     const targetMastered = masteredTech.includes(Number(edge.target));
     const sourceMastering = masteringTech.includes(Number(edge.source));
@@ -104,7 +112,7 @@ const TechGraph = ({
 
     if (sourceMastered && targetMastered) {
       return "mastered"; // 緑色
-    } else if (sourceMastering && targetMastering) {
+    } else if (sourceMastering || targetMastering) {
       return "mastering"; // 青色
     }
     return ""; // デフォルト色
