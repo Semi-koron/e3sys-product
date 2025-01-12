@@ -66,6 +66,9 @@ export const fetchUserData = async (uuid: string) => {
       "Content-Type": "application/json",
     },
   });
+  if (res === null) {
+    return null;
+  }
   const returndata: UserData = {
     userId: res.id,
     userName: res.name,

@@ -21,6 +21,7 @@ import DemandList from "@/components/DemandList";
 export default function Home() {
   const router = useRouter();
   const [name, setName] = useState("");
+  const [uuid, setUuid] = useState("");
   const [masteredTech, setMasteredTech] = useState<number[]>([]);
   const [masteringTech, setMasteringTech] = useState<number[]>([]);
   const [demandData, setDemandData] = useState<DemandData[]>([]);
@@ -36,13 +37,19 @@ export default function Home() {
       }
       try {
         const uuid = await tokenVerify(token);
+        setUuid(uuid);
         //userDataを取得
-        const res: UserData = await fetchUserData(uuid);
+        const res: UserData | null = await fetchUserData(uuid);
+        if (!res) {
+          router.push("/user-setting");
+          return;
+        }
         setMasteredTech(res.masteredTech);
         setMasteringTech(res.learningTech);
         setName(res.userName);
       } catch (e) {
-        router.push("/user-setting");
+        console.log(e);
+        router.push("/login");
         return;
       }
       const techData = await fetchTechData();

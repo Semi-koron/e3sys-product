@@ -12,7 +12,6 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [echo, setEcho] = useState("");
   const router = useRouter();
 
   const handleLogin = async () => {
@@ -41,26 +40,14 @@ const Login = () => {
       const res = await searchUserExist(uuid.data.uid);
       // res.dataが存在しない場合は、ユーザー登録を行う
       if (!res) {
+        alert("ユーザー登録を行ってください");
         router.push("/user-setting");
         return;
       }
-
+      alert("ログインしました");
       router.push("/");
     } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleEcho = async () => {
-    try {
-      // sesstionStorageからトークンを取得
-      const token = sessionStorage.getItem("token");
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      const res = await axios.post("http://localhost:8080/api/echo", {
-        question: echo,
-      });
-      console.log(res.data);
-    } catch (err) {
+      alert("ログインに失敗しました");
       console.error(err);
     }
   };
@@ -76,15 +63,10 @@ const Login = () => {
           </h2>
           <form>
             <div className="mb-6">
-              <label
-                htmlFor="email"
-                className="block text-gray-700 font-medium"
-              >
-                メールアドレス
-              </label>
               <Input
                 type="email"
                 id="email"
+                title="メールアドレス"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -92,14 +74,9 @@ const Login = () => {
               />
             </div>
             <div className="mb-6">
-              <label
-                htmlFor="password"
-                className="block text-gray-700 font-medium"
-              >
-                パスワード
-              </label>
               <Input
                 type={showPassword ? "text" : "password"}
+                title="パスワード"
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

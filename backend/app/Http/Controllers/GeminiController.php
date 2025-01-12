@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Gemini\Laravel\Facades\Gemini;
-
+use App\Models\UserData;
+use App\Models\DemandData;
 use Illuminate\Support\Str;
 
 class GeminiController extends Controller
@@ -16,45 +17,78 @@ class GeminiController extends Controller
     */
     public function question(Request $request)
     {
-        $question1 = $request->input('question1');
-        $answer1 = $request->input('answer1');
-        $question2 = $request->input('question2');
-        $answer2 = $request->input('answer2');
-        $question3 = $request->input('question3');
-        $answer3 = $request->input('answer3');
-        $sentence = "";
-        if($question1 == null){
-            $sentence ="あなたはエンジニアが技術を習得する際のアドバイザーです。現在一人のエンジニアがあなたにどのような技術を習得するべきか相談してきました。3つの質問とエンジニアからの回答で、3つほど技術を提示する予定です。また提示してよい技術はHTML.CSS.JavaScript.Sass.React.Vue.js.Redux.Next.js.Node.js.Express.js.NestJS.Ruby on Rails.Django.Flask.AWS.Amazon S3.Amazon EC2.Docker.Kubernetes.Terraform.Swift.UIKit.Kotlin.Jetpack Compose.React Native.Flutter.Unity.C#.Unreal Engine.C++.Godot.GraphQL.MongoDB.PostgreSQL.SQLite.Git.GitHub.GitLab.Jenkins.CircleCI.Webpack.Vite.ESLint.Prettier.Three.js.AR.js.TensorFlow.js.PyTorch.OpenCV.Rustです。
-            最初の質問をしてください。またマークダウンは使用できません。";
-        }
-        if($question1 != null && $question2 == null){
-            $sentence ="あなたはエンジニアが技術を習得する際のアドバイザーです。現在一人のエンジニアがあなたにどのような技術を習得するべきか相談してきました。3つの質問とエンジニアからの回答で、3つほど技術を提示する予定です。また提示してよい技術はHTML.CSS.JavaScript.Sass.React.Vue.js.Redux.Next.js.Node.js.Express.js.NestJS.Ruby on Rails.Django.Flask.AWS.Amazon S3.Amazon EC2.Docker.Kubernetes.Terraform.Swift.UIKit.Kotlin.Jetpack Compose.React Native.Flutter.Unity.C#.Unreal Engine.C++.Godot.GraphQL.MongoDB.PostgreSQL.SQLite.Git.GitHub.GitLab.Jenkins.CircleCI.Webpack.Vite.ESLint.Prettier.Three.js.AR.js.TensorFlow.js.PyTorch.OpenCV.Rustです。
-            一つ目の質問は既に終わっており、" .
-            $question1 . "という質問に対して、" . $answer1 . "という回答がありました。2つ目の質問をしてください。またマークダウンは使用できません。";
-        }
-        if($question2 != null && $question3 == null){
-            $sentence ="あなたはエンジニアが技術を習得する際のアドバイザーです。現在一人のエンジニアがあなたにどのような技術を習得するべきか相談してきました。3つの質問とエンジニアからの回答で、3つほど技術を提示する予定です。また提示してよい技術はHTML.CSS.JavaScript.Sass.React.Vue.js.Redux.Next.js.Node.js.Express.js.NestJS.Ruby on Rails.Django.Flask.AWS.Amazon S3.Amazon EC2.Docker.Kubernetes.Terraform.Swift.UIKit.Kotlin.Jetpack Compose.React Native.Flutter.Unity.C#.Unreal Engine.C++.Godot.GraphQL.MongoDB.PostgreSQL.SQLite.Git.GitHub.GitLab.Jenkins.CircleCI.Webpack.Vite.ESLint.Prettier.Three.js.AR.js.TensorFlow.js.PyTorch.OpenCV.Rustです。
-            一つ目の質問は既に終わっており、" .
-            $question1 . "という質問に対して、" . $answer1 . "という回答がありました。2つ目の質問は既に終わっており、" .
-            $question2 . "という質問に対して、" . $answer2 . "という回答がありました。3つ目の質問をしてください。またマークダウンは使用できません。";
-        }
-        if($question3 != null){
-            $sentence ="あなたはエンジニアが技術を習得する際のアドバイザーです。現在一人のエンジニアがあなたにどのような技術を習得するべきか相談してきました。3つの質問とエンジニアからの回答で、3つほど技術を提示してください。また提示してよい技術はHTML.CSS.JavaScript.Sass.React.Vue.js.Redux.Next.js.Node.js.Express.js.NestJS.Ruby on Rails.Django.Flask.AWS.Amazon S3.Amazon EC2.Docker.Kubernetes.Terraform.Swift.UIKit.Kotlin.Jetpack Compose.React Native.Flutter.Unity.C#.Unreal Engine.C++.Godot.GraphQL.MongoDB.PostgreSQL.SQLite.Git.GitHub.GitLab.Jenkins.CircleCI.Webpack.Vite.ESLint.Prettier.Three.js.AR.js.TensorFlow.js.PyTorch.OpenCV.Rustです。
-            一つ目の質問は既に終わっており、" .
-            $question1 . "という質問に対して、" . $answer1 . "という回答がありました。2つ目の質問は既に終わっており、" .
-            $question2 . "という質問に対して、" . $answer2 . "という回答がありました。3つ目の質問は既に終わっており、" .
-            $question3 . "という質問に対して、" . $answer3 . "という回答がありました。エンジニアに提示する技術を選んでください。またマークダウンは使用できません。";
-        }
-        // .env に設定したAPIキーを取得
+        // uuidを取得
+        $uuid = $request->input('uuid');
 
-        // Gemini APIにリクエストして応答を取得
-        $result = Gemini::geminiPro()->generateContent($sentence);
-        $response_text = $result->text();  // Gemini からの応答を取得
+        // uuidからユーザーの使える技術を取得
+        $user = UserData::with('learned')->where('uuid', $uuid)->first();
 
-        // json形式で返す
-        return response()->json([
-            'response' => $response_text
-        ]);
+        // ユーザーが使える技術を取得
+        foreach($user->learned as $tech){
+            $techs[] = [
+                'name' => $tech->name,
+                'status' => $tech->pivot->status
+            ];
+        }
+        // システムメッセージを記述
+        $system = "あなたはエンジニアが技術を習得する際のアドバイザーです。現在会社に寄せられている案件の情報やユーザーの習得している技術から学習に必要な時間を考慮しつつ、ユーザーが習得するべき技術を話し合いを通して後ほど示すリストの中から提案します。次に示すのは相談相手のユーザーが習得している技術と習得中の技術です。";
+        $system .= "\n";
+        foreach($techs as $tech){
+            $system .= $tech['name'];
+            if($tech['status'] == 'mastered'){
+                $system .= " : 習得済み";
+            }else{
+                $system .= " : 習得中";
+            }
+            $system .= "\n";
+        }
+        $system .= "\n";
+        foreach($techs as $tech){
+            $system .= $tech['name'] . " : " . $tech['status'];
+            $system .= "\n";
+        }
+        $system .= "```";
+        $system .= "\n";
+
+        // 案件のデータの取得
+        $demandData = DemandData::with('need')->get();
+        $system .= "会社に寄せられている案件の情報は以下の通りです。";
+        $system .= "\n";
+        $system .= "```";
+        $system .= "\n";
+        foreach($demandData as $demand){
+            $system .= "案件名 : " . $demand->name;
+            $system .= "\n";
+            $system .= "開始日 : " . $demand->start_date;
+            $system .= "\n";
+            $system .= "終了日 : " . $demand->end_date;
+            $system .= "\n";
+            $system .= "必要な技術 : ";
+            foreach($demand->need as $need){
+                $system .= $need->name . " ";
+            }
+            $system .= "\n";
+            $system .= "\n";
+        }
+        $system .= "```";
+        $system .= "\n";
+        $system .= "よってユーザーの既に習得している技術や案件に必要な技術の情報を用いた質問を通して、ユーザーが習得するべき技術を決定してください。またユーザーは案件の情報を一切知らず、やりたい技術が分からず困っていると仮定して、できるだけ丁寧に対応してください。またこのレスポンスでは質問を一つだけ送ってください。三回目の質問の後に、ユーザーが習得するべき技術を提案します。絶対にマークダウンは使わないこと。";
+
+        $history_raw = $request->input('history');
+        // history_rawが空の場合
+        if(!$history_raw){
+            $chat = Gemini::chat()->startChat();
+            $response = $chat->sendMessage($system);
+            $response_text = $response->text();
+            return response()->json([$response_text]);
+        }
+        $history = [ $system, $history_raw ];
+        $chat = Gemini::chat()->startChat($history);
+        $message = $request->input('message');
+        $response = $chat->sendMessage($message);
+
+        $response_text = $response->text();
+        return response()->json([$response_text]);
     }
 
     function geminiTest (Request $request) {
