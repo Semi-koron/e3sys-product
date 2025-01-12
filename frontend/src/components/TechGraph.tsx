@@ -120,7 +120,7 @@ const TechGraph = ({
 
   return (
     <section className="bg-white p-4 rounded-lg shadow-md">
-      <h2 className="text-lg text-black">グラフ</h2>
+      <h2 className="text-lg text-black">スキルツリー</h2>
       <Graph
         nodeColor={initialNodes.map((node) => getNodeStyle(node))}
         edgeColor={initialEdges.map((edge) => getEdgeStyle(edge))}

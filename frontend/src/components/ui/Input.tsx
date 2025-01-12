@@ -20,7 +20,7 @@ const Input: React.FC<InputProps> = ({
   };
 
   return (
-    <div className="flex flex-col  mb-4">
+    <div className="flex flex-col flex-grow">
       {title && (
         <label className="text-lg mb-2 bg-white text-black">{title}</label>
       )}
@@ -28,7 +28,6 @@ const Input: React.FC<InputProps> = ({
         {...props}
         onChange={handleChange}
         className="bg-slate-300 h-10 w-full px-4 text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300"
-
       />
     </div>
   );
