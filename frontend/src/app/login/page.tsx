@@ -100,7 +100,10 @@ const Login = () => {
                   checked={showPassword}
                   onChange={() => setShowPassword(!showPassword)}
                 />
-                <label htmlFor="show-password" className="text-sm text-gray-600">
+                <label
+                  htmlFor="show-password"
+                  className="text-sm text-gray-600"
+                >
                   パスワードを表示
                 </label>
               </div>
@@ -110,19 +113,15 @@ const Login = () => {
                 type="button"
                 onClick={handleLogin}
                 disabled={!isFormValid}
-                className={`py-2 px-4 rounded-lg font-bold text-white transition duration-300 ${isFormValid
+                className={`py-2 px-4 rounded-lg font-bold text-white transition duration-300 ${
+                  isFormValid
                     ? "bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700"
                     : "bg-gray-300 cursor-not-allowed"
-                  }`}
+                }`}
               >
                 ログイン
               </button>
             </div>
-            <div className="flex justify-center">
-              <Button type="button">
-                新規登録
-                </Button>
-              </div>
           </form>
         </div>
       </div>
