@@ -17,12 +17,16 @@ import { useRouter } from "next/navigation";
 import { UserData } from "./types/User";
 3;
 import DemandList from "@/components/DemandList";
+import { TechModal } from "@/components/TechModal";
 
 export default function Home() {
   const router = useRouter();
   const [name, setName] = useState("");
+  const [uuid, setUuid] = useState<string>("");
   const [masteredTech, setMasteredTech] = useState<number[]>([]);
   const [masteringTech, setMasteringTech] = useState<number[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [modalTechId, setModalTechId] = useState<number>(-1);
   const [demandData, setDemandData] = useState<DemandData[]>([]);
 
   const [techData, setTechData] = useState<TechData[]>([]);
@@ -36,6 +40,7 @@ export default function Home() {
       }
       try {
         const uuid = await tokenVerify(token);
+        setUuid(uuid);
         //userDataを取得
         const res: UserData | null = await fetchUserData(uuid);
         if (!res) {
@@ -55,9 +60,11 @@ export default function Home() {
       setDemandData(demandData);
       setTechData(techData);
     };
+    if (!isModalOpen) {
+      fetchData();
+    }
+  }, [isModalOpen]);
 
-    fetchData();
-  }, []);
   return (
     <div className="bg-orange-400 min-h-screen p-8">
       <div className="flex justify-between items-center mb-4">
@@ -73,8 +80,24 @@ export default function Home() {
           techData={techData}
           masteredTech={masteredTech}
           masteringTech={masteringTech}
+          setTechModalId={setModalTechId}
+          setIsModalOpen={setIsModalOpen}
         />
         <DemandList demandData={demandData} />
+        <TechModal
+          isModalOpen={isModalOpen}
+          techName={
+            modalTechId < 0
+              ? ""
+              : techData.find((tech) => tech.techId === modalTechId)
+                  ?.techName || ""
+          }
+          setIsModalOpen={setIsModalOpen}
+          uuid={uuid}
+          masteredTech={masteredTech}
+          masteringTech={masteringTech}
+          modalTechId={modalTechId}
+        />
       </main>
     </div>
   );

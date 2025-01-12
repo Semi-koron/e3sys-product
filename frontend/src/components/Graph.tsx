@@ -1,5 +1,6 @@
 "use client";
 import { ReactFlow, MiniMap, Background } from "@xyflow/react";
+import { useCallback } from "react";
 import dagre from "dagre";
 
 import "@xyflow/react/dist/style.css";
@@ -18,23 +19,18 @@ export function applyDagreLayout(data: {
   const nodeWidth = 180;
   const nodeHeight = 50;
 
-  // グラフの設定
   graph.setGraph({ rankdir: "TB" }); // TB = Top-Bottom (上から下)
 
-  // ノードを追加
   data.nodes.forEach((node) => {
     graph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
   });
 
-  // エッジを追加
   data.edges.forEach((edge) => {
     graph.setEdge(edge.source, edge.target);
   });
 
-  // レイアウト計算
   dagre.layout(graph);
 
-  // 新しい位置を更新
   const positionedNodes = data.nodes.map((node) => {
     const nodeWithPosition = graph.node(node.id);
     return {
@@ -68,6 +64,8 @@ type GraphProps = {
   nodeColor?: string[];
   edgeColor?: string[];
   children?: React.ReactNode;
+  setModalOpen?: (isOpen: boolean) => void;
+  setTechModalId?: (techId: number) => void;
 };
 
 const Graph = ({
@@ -76,8 +74,9 @@ const Graph = ({
   nodeColor,
   edgeColor,
   children,
+  setModalOpen,
+  setTechModalId,
 }: GraphProps) => {
-  // ノードとエッジのスタイルを更新
   const getNodeStyle = (node: {
     position: {
       x: number;
@@ -133,6 +132,13 @@ const Graph = ({
     edges: graphEdge,
   });
 
+  const handleNodeClick = useCallback((event: React.MouseEvent, node: any) => {
+    if (setModalOpen) {
+      setModalOpen(true);
+    }
+    setTechModalId?.(Number(node.id));
+  }, []);
+
   return (
     <ReactFlow
       nodes={positionedGraph.nodes.map((node) => ({
@@ -148,6 +154,7 @@ const Graph = ({
         style: getEdgeStyle(edge, index),
       }))}
       className="text-black min-h-64"
+      onNodeClick={handleNodeClick}
       onConnect={() => {
         console.log("onConnect");
       }}

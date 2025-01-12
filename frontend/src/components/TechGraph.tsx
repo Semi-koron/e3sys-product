@@ -9,6 +9,8 @@ type TechGraphProps = {
   techData: TechData[];
   masteredTech: number[];
   masteringTech: number[];
+  setTechModalId?: React.Dispatch<React.SetStateAction<number>>;
+  setIsModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const generateGraph = (data: TechData[]) => {
@@ -82,6 +84,8 @@ const TechGraph = ({
   techData,
   masteredTech,
   masteringTech,
+  setTechModalId,
+  setIsModalOpen,
 }: TechGraphProps) => {
   const initialNodes = generateGraph(techData).nodes;
   const initialEdges = generateGraph(techData).edges;
@@ -126,6 +130,8 @@ const TechGraph = ({
         edgeColor={initialEdges.map((edge) => getEdgeStyle(edge))}
         graphNode={initialNodes}
         graphEdge={initialEdges}
+        setModalOpen={setIsModalOpen}
+        setTechModalId={setTechModalId}
       />
     </section>
   );
