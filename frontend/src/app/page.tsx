@@ -54,7 +54,7 @@ export default function Home() {
     fetchData();
   }, []);
   return (
-    <div className="bg-orange-500 min-h-screen p-8">
+    <div className="bg-orange-400 min-h-screen p-8">
       <div className="flex justify-between items-center mb-4">
         <MenuButton />
         <div className="flex-1 flex justify-center">
