@@ -9,8 +9,10 @@ import TechSelector from "@/components/TechSelector";
 import axios from "axios";
 import { TechData } from "../types/Tech";
 import { fetchTechData } from "../lib/server-action";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   const [name, setName] = useState("");
   const [techIds, setTechIds] = useState<number[]>([]);
   const [techData, setTechData] = useState<TechData[]>([]);
@@ -45,6 +47,7 @@ export default function Home() {
       });
 
       alert("保存しました");
+      router.push("/");
     } catch (e) {
       console.error(e);
       alert("保存に失敗しました");

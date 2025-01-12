@@ -5,16 +5,25 @@ import Profile from "@/components/Profile";
 import Survey from "@/components/Survey";
 import TechGraph from "@/components/TechGraph";
 import { TechData } from "./types/Tech";
-import { fetchTechData, fetchUserData, tokenVerify } from "./lib/server-action";
+import { DemandData } from "./types/Demand";
+import {
+  fetchTechData,
+  fetchUserData,
+  fetchDemandData,
+  tokenVerify,
+} from "./lib/server-action";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { UserData } from "./types/User";
+3;
+import DemandList from "@/components/DemandList";
 
 export default function Home() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [masteredTech, setMasteredTech] = useState<number[]>([]);
   const [masteringTech, setMasteringTech] = useState<number[]>([]);
+  const [demandData, setDemandData] = useState<DemandData[]>([]);
 
   const [techData, setTechData] = useState<TechData[]>([]);
 
@@ -33,9 +42,12 @@ export default function Home() {
         setMasteringTech(res.learningTech);
         setName(res.userName);
       } catch (e) {
+        router.push("/user-setting");
         return;
       }
       const techData = await fetchTechData();
+      const demandData = await fetchDemandData();
+      setDemandData(demandData);
       setTechData(techData);
     };
 
@@ -57,6 +69,7 @@ export default function Home() {
           masteredTech={masteredTech}
           masteringTech={masteringTech}
         />
+        <DemandList demandData={demandData} />
       </main>
     </div>
   );

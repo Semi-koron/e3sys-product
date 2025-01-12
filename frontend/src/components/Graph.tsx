@@ -110,12 +110,15 @@ const Graph = ({
     }
   };
 
-  const getEdgeStyle = (edge: {
-    id: string;
-    source: string;
-    target: string;
-  }) => {
-    switch (edgeColor?.[Number(edge.id)]) {
+  const getEdgeStyle = (
+    edge: {
+      id: string;
+      source: string;
+      target: string;
+    },
+    index: number
+  ) => {
+    switch (edgeColor?.[index]) {
       case "mastered":
         return { stroke: "rgba(34,197,94,1)", strokeWidth: 2 };
       case "mastering":
@@ -138,11 +141,11 @@ const Graph = ({
         data: { label: node.data.label },
         style: getNodeStyle(node),
       }))}
-      edges={graphEdge.map((edge) => ({
+      edges={graphEdge.map((edge, index) => ({
         id: edge.id,
         source: edge.source,
         target: edge.target,
-        style: getEdgeStyle(edge),
+        style: getEdgeStyle(edge, index),
       }))}
       className="text-black min-h-64"
       onConnect={() => {

@@ -11,7 +11,7 @@ type TechSelectorProps = {
 const TechSelector = ({ setTechIds, techData }: TechSelectorProps) => {
   return (
     <Section title="技術選択">
-      <div className="h-60 overflow-y-auto">
+      <div className="h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-300">
         <ul>
           {techData.map((tech, index) => (
             <li key={index}>
