@@ -22,12 +22,11 @@ class TechData extends Model
 
     public function parent()
     {
-        return $this->belongsToMany(TechData::class, 'ptech_ctech')->withTimestamps();
+        return $this->belongsToMany(TechData::class, 'ptech_ctech', 'child_tech_data_id', 'parent_tech_data_id')->withTimestamps();
     }
 
     public function children()
     {
-        return $this->belongsToMany(TechData::class, 'ptech_ctech')->withTimestamps();
-
+        return $this->belongsToMany(TechData::class, 'ptech_ctech', 'parent_tech_data_id', 'child_tech_data_id')->withTimestamps();
     }
 }

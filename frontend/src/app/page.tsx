@@ -1,10 +1,58 @@
+"use client";
 import MenuButton from "@/components/Button";
 import Header from "@/components/Header";
 import Profile from "@/components/Profile";
 import Survey from "@/components/Survey";
-import Graph from "@/components/Graph";
+import TechGraph from "@/components/TechGraph";
+import { TechData } from "./types/Tech";
+import { DemandData } from "./types/Demand";
+import {
+  fetchTechData,
+  fetchUserData,
+  fetchDemandData,
+  tokenVerify,
+} from "./lib/server-action";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { UserData } from "./types/User";
+3;
+import DemandList from "@/components/DemandList";
 
 export default function Home() {
+  const router = useRouter();
+  const [name, setName] = useState("");
+  const [masteredTech, setMasteredTech] = useState<number[]>([]);
+  const [masteringTech, setMasteringTech] = useState<number[]>([]);
+  const [demandData, setDemandData] = useState<DemandData[]>([]);
+
+  const [techData, setTechData] = useState<TechData[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = sessionStorage.getItem("token");
+      if (!token) {
+        router.push("/login");
+        return;
+      }
+      try {
+        const uuid = await tokenVerify(token);
+        //userDataを取得
+        const res: UserData = await fetchUserData(uuid);
+        setMasteredTech(res.masteredTech);
+        setMasteringTech(res.learningTech);
+        setName(res.userName);
+      } catch (e) {
+        router.push("/user-setting");
+        return;
+      }
+      const techData = await fetchTechData();
+      const demandData = await fetchDemandData();
+      setDemandData(demandData);
+      setTechData(techData);
+    };
+
+    fetchData();
+  }, []);
   return (
     <div className="bg-orange-400 min-h-screen p-8">
       <div className="flex justify-between items-center mb-4">
@@ -14,9 +62,14 @@ export default function Home() {
         </div>
       </div>
       <main className="flex flex-col gap-4 mb-6">
-        <Profile />
+        <Profile name={name} />
         <Survey />
-        <Graph />
+        <TechGraph
+          techData={techData}
+          masteredTech={masteredTech}
+          masteringTech={masteringTech}
+        />
+        <DemandList demandData={demandData} />
       </main>
     </div>
   );

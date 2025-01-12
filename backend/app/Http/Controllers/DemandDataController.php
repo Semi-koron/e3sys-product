@@ -12,7 +12,8 @@ class DemandDataController extends Controller
      */
     public function index()
     {
-        //
+        $demandData = DemandData::with('need')->get();
+        return response()->json($demandData);
     }
 
     /**
@@ -28,7 +29,19 @@ class DemandDataController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $name = $request->input('name');
+        $endTime = $request->input('end_time');
+        $startTime = $request->input('start_time');
+        $techId = $request->input('techId');
+        $demandData = new DemandData();
+        $demandData->start_date = $startTime;
+        $demandData->end_date = $endTime;
+        $demandData->name = $name;
+        $demandData->save();
+
+        $demandData->need()->attach($techId);
+
+        return response()->json(['message' => 'Demand data created']);
     }
 
     /**

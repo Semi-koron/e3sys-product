@@ -1,4 +1,4 @@
-import React, { HTMLInputTypeAttribute } from "react";
+import React from "react";
 
 type InputProps = {
   title?: string;
@@ -28,6 +28,7 @@ const Input: React.FC<InputProps> = ({
         {...props}
         onChange={handleChange}
         className="bg-slate-300 h-10 w-full px-4 text-black border border-gray-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300"
+
       />
     </div>
   );

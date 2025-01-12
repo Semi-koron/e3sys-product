@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MenuButton from "@/components/Button";
 import Header from "@/components/Header";
 import Input from "@/components/ui/Input";
@@ -7,10 +7,23 @@ import { Section } from "@/components/ui/Section";
 import Button from "@/components/ui/Button";
 import TechSelector from "@/components/TechSelector";
 import axios from "axios";
+import { TechData } from "../types/Tech";
+import { fetchTechData } from "../lib/server-action";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   const [name, setName] = useState("");
   const [techIds, setTechIds] = useState<number[]>([]);
+  const [techData, setTechData] = useState<TechData[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchTechData();
+      setTechData(data);
+    };
+    fetchData();
+  }, []);
 
   const saveProfile = async () => {
     try {
@@ -34,6 +47,7 @@ export default function Home() {
       });
 
       alert("保存しました");
+      router.push("/");
     } catch (e) {
       console.error(e);
       alert("保存に失敗しました");
@@ -50,12 +64,8 @@ export default function Home() {
       </div>
       <main>
         <Section title="プロフィール" className="flex flex-col gap-4 mb-6">
-          <Input
-            title="名前"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <TechSelector setTechIds={setTechIds} techIds={techIds} />
+          <Input title="名前" setValue={setName} />
+          <TechSelector setTechIds={setTechIds} techData={techData} />
           <Button onClick={saveProfile}>保存</Button>
         </Section>
       </main>
