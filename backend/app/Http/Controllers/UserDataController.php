@@ -100,4 +100,26 @@ class UserDataController extends Controller
         }
         return response()->json($userData);
     }
+
+    public function learn(Request $request){
+        $uuid = $request->input('uuid');
+        $techId = $request->input('techId');
+        $userData = UserData::where('uuid', $uuid)->first();
+        if(!$userData){
+            return response()->json(['error' => 'User not found'], 404);
+        }
+        $userData->learned()->attach($techId, ['status' => 'mastering']);
+        return response()->json(['message' => 'Tech learned']);
+    }
+
+    public function master(Request $request){
+        $uuid = $request->input('uuid');
+        $techId = $request->input('techId');
+        $userData = UserData::where('uuid', $uuid)->first();
+        if(!$userData){
+            return response()->json(['error' => 'User not found'], 404);
+        }
+        $userData->learned()->attach($techId, ['status' => 'mastered']);
+        return response()->json(['message' => 'Tech mastered']);
+    }
 }
