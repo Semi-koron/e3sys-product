@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 type SidebarProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -17,9 +19,21 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         </button>
       </div>
       <ul className="p-4">
-        <li className="mb-2">メニュー1</li>
-        <li className="mb-2">メニュー2</li>
-        <li className="mb-2">メニュー3</li>
+        <li className="mb-2">
+          <Link href="/">ホーム</Link>
+        </li>
+        <li className="mb-2">
+          <Link href="/demand-create">案件登録</Link>
+        </li>
+        <li className="mb-2">
+          <Link href="/graph-editting">グラフ編集</Link>
+        </li>
+        <li className="mb-2">
+          <Link href="/user-setting">ユーザ設定</Link>
+        </li>
+        <li className="mb-2">
+          <Link href="/login">ログイン</Link>
+        </li>
       </ul>
     </div>
   );
