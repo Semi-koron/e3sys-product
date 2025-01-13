@@ -37,7 +37,7 @@ export default function GraphEditting() {
 
     const edges: { id: string; source: string; target: string }[] = [];
     data.forEach((tech) => {
-      tech.needTech.forEach((dependencyId) => {
+      tech.neededTech.forEach((dependencyId) => {
         edges.push({
           id: `e${dependencyId}-${tech.techId}`,
           source: dependencyId.toString(),
@@ -93,7 +93,7 @@ export default function GraphEditting() {
   };
 
   return (
-    <div className="bg-orange-500 min-h-screen p-8">
+    <div className="bg-orange-400 min-h-screen p-8">
       <div className="flex justify-between items-center mb-4">
         <MenuButton />
         <div className="flex-1 flex justify-center">
